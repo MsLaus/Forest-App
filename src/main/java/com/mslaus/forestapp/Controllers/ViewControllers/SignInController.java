@@ -78,7 +78,7 @@ public class SignInController extends SQLConnection  {
             userHelper.setUserId(ID);
 
             //Changing the interface
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
             Parent root = loader.load();
             stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             scene = new Scene(root);

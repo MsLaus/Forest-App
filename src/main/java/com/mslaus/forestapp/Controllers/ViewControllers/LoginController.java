@@ -49,7 +49,7 @@ public class LoginController extends SQLConnection {
             userHelper.setUserId(id);
             TimeLabelHelper helper = new TimeLabelHelper();
             helper.setTime(60);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
             Parent root = loader.load();
             stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             scene = new Scene(root);

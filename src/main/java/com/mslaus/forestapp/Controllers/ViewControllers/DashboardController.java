@@ -1,9 +1,9 @@
 package com.mslaus.forestapp.Controllers.ViewControllers;
 
+import com.mslaus.forestapp.HelloApplication;
 import com.mslaus.forestapp.Helpers.TimeHelper;
 import com.mslaus.forestapp.Helpers.TimeLabelHelper;
 import com.mslaus.forestapp.Helpers.UserHelper;
-import com.mslaus.forestapp.Main;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ObservableValue;
@@ -169,7 +169,7 @@ public class DashboardController extends SQLConnection implements Initializable 
     private void changeTag(){
         // TODO: pop new stage, set the static field of tag to the chosen tag
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("chooseTag.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("chooseTag-view.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 600, 800);
@@ -208,7 +208,7 @@ public class DashboardController extends SQLConnection implements Initializable 
 
     @FXML
     private void shop(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -238,7 +238,7 @@ public class DashboardController extends SQLConnection implements Initializable 
 
     @FXML
     private void rewards(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("rewards-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("achievement-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -258,7 +258,7 @@ public class DashboardController extends SQLConnection implements Initializable 
 
     @FXML
     private void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

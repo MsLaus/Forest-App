@@ -18,7 +18,7 @@ public class MainController {
     @FXML
     private void signIn(ActionEvent e) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sign-in-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("signIn-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

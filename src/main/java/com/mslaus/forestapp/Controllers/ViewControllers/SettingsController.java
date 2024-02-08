@@ -139,7 +139,7 @@ public class SettingsController extends SQLConnection implements Initializable {
 
     @FXML
     private void shop(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -169,7 +169,7 @@ public class SettingsController extends SQLConnection implements Initializable {
 
     @FXML
     private void rewards(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("rewards-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("achievement-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -179,7 +179,7 @@ public class SettingsController extends SQLConnection implements Initializable {
 
     @FXML
     private void forest(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -189,7 +189,7 @@ public class SettingsController extends SQLConnection implements Initializable {
 
     @FXML
     private void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
