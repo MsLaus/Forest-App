@@ -1,0 +1,21 @@
+.green-background{
+  -fx-background-color: #83c9a3  ;
+}
+
+.yellow-background{
+  -fx-background-color: #f5f599 ;
+ }
+
+ .shadow {
+   -fx-effect: dropShadow(three-pass-box, rgba(0,0,0,2), 10, 0, 0, 0, 10);
+ }
+
+ .slider .track{
+   -fx-background-color: #f5f599;
+ }
+
+ .slider .thumb{
+    -fx-background-color: #f5f599;
+    -fx-effect: dropShadow(three-pass-box, rgba(0,0,0,2), 5, 0, 0, 0, 5);
+ }
+
