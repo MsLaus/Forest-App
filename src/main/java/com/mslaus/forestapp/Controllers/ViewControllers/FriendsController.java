@@ -113,6 +113,7 @@ public class FriendsController extends SQLConnection implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         //set the image of the menu button
         ImageView image = new ImageView("menu.png");
 

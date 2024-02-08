@@ -30,7 +30,7 @@ public class MainController {
     @FXML
     private void logIn(ActionEvent e) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("log-in-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("logIn-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
