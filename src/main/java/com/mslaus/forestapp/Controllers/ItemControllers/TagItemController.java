@@ -9,13 +9,13 @@ import javafx.scene.layout.VBox;
 public class TagItemController {
 
     @FXML
-    private VBox vbox;
+    public VBox vbox;
 
     @FXML
-    private HBox colour;
+    public HBox colour;
 
     @FXML
-    private Label name;
+    public Label name;
     public void setData(Tag tag){
 
         name.setText(tag.getName());

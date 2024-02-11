@@ -18,33 +18,35 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.Random;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class SignInController extends SQLConnection  {
 
     @FXML
-    private TextField username;
+    public TextField username;
 
     @FXML
-    private PasswordField password;
+    public PasswordField password;
 
     @FXML
-    private PasswordField password1;
+    public PasswordField password1;
 
     SQLConnection db = new SQLConnection();
     Connection conn = db.connection();
 
 
-    private Scene scene;
-    private Stage stage;
+    public Scene scene;
+    public Stage stage;
 
 
     @FXML
-    private void signIn(ActionEvent e) throws IOException {
+    public void signIn(ActionEvent e) throws IOException {
 
-        final String PASSWORD = password.getText();
-        final String REPEATEDPASSWORD = password1.getText();
+        String pass = password.getText();
+        String pass2 = password1.getText();
 
         //Check if the password is longer or equal to 8 characters.
-        if (PASSWORD.length() < 8) {
+        if (pass.length() < 8) {
             Dialog<String> dialog = new Dialog<>();
             dialog.setTitle("Error");
             dialog.setContentText("The password must have 8 letters or digits.");
@@ -54,7 +56,7 @@ public class SignInController extends SQLConnection  {
         }
 
         //Checks if any field is empty
-        if (PASSWORD.isEmpty() || REPEATEDPASSWORD.isEmpty() || username.getText().isEmpty()) {
+        if (pass.isEmpty() || pass2.isEmpty() || username.getText().isEmpty()) {
             Dialog<String> dialog = new Dialog<>();
             dialog.setTitle("Error");
             dialog.setContentText("You need to complete all the fields.");
@@ -64,7 +66,11 @@ public class SignInController extends SQLConnection  {
         }
 
         //Checks if the passwords fields' value are the same
-        if (PASSWORD.equals(REPEATEDPASSWORD)) {
+        if (pass.equals(pass2)) {
+
+            //encrypt password, and store it in the db
+
+            final String PASSWORD = BCrypt.hashpw(pass, BCrypt.gensalt());
 
             final String USERNAME = username.getText();
             final int ID = generateID();
@@ -78,7 +84,7 @@ public class SignInController extends SQLConnection  {
             userHelper.setUserId(ID);
 
             //Changing the interface
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
             Parent root = loader.load();
             stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             scene = new Scene(root);

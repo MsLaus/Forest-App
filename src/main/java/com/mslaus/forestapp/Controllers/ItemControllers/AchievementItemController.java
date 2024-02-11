@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 public class AchievementItemController {
 
     @FXML
-    private Label title, description, status;
+    public Label title, description, status;
     public void setData(Achievement ach){
 
         title.setText(ach.getTitle());

@@ -1,11 +1,14 @@
 package com.mslaus.forestapp;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class SQLConnection {
+
 
     public Connection connection(){
         Connection conn = null;
@@ -38,6 +41,25 @@ public class SQLConnection {
         catch (Exception e){
             System.out.println(e);
         }
+    }
+
+    /** checks if the username is unique in the db, returns false if it is already in the db*/
+
+    protected boolean uniqueUsername(Connection conn, String username){
+        Statement statement;
+        ResultSet rs;
+        try {
+            String query = String.format("select * from Users where username = '%s'", username);
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            if(rs.next()){
+                return false;
+            }
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return true;
     }
 
     protected void insertUser(Connection conn, int id, String username, String password, int gold, int total_minutes){
@@ -76,20 +98,29 @@ public class SQLConnection {
 
     /**checks if the username and password exist in the database, return false if not*/
     protected boolean validate(Connection conn, String username, String password){
+
+        String hashedPassword = getPassword(conn, username);
+        boolean passwordMatch = BCrypt.checkpw(password, hashedPassword);
+        return passwordMatch;
+
+    }
+
+    private String getPassword(Connection conn, String username) {
         Statement statement;
-        ResultSet rs ;
-        try {
-            String query = String.format(" SELECT * FROM Users WHERE username = '%s' AND password = '%s' ", username, password);
+        ResultSet rs;
+        String result = "";
+        try{
+            String query = String.format("select password from users where username = '%s'", username);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
-            if(!rs.next()){
-                return false;
+            if (rs.next()){
+                result = rs.getString("password");
             }
-
-        }catch (Exception e){
-            e.printStackTrace();
         }
-        return true;
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return result;
     }
 
     protected String getUsername(Connection conn, int id){
@@ -111,12 +142,12 @@ public class SQLConnection {
 
     }
 
-    protected int getId(Connection conn, String username, String password){
+    protected int getId(Connection conn, String username){
         Statement statement;
         ResultSet rs;
         String result = "";
         try{
-            String query = String.format("select id from users where username = '%s' AND password = '%s'", username, password);
+            String query = String.format("select id from users where username = '%s' ", username);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){

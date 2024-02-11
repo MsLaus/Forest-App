@@ -8,10 +8,10 @@ import javafx.scene.layout.VBox;
 public class TimelineItemController {
 
     @FXML
-    private VBox vbox;
+    public VBox vbox;
 
     @FXML
-    private Label endTime, focusedtTime, tagName, time;
+    public Label endTime, focusedtTime, tagName, time;
     public void setData(TimeEvent timeEvent){
 
         endTime.setText(timeEvent.getEndTime());

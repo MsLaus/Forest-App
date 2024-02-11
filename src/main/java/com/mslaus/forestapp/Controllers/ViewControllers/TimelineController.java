@@ -14,12 +14,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,16 +34,16 @@ import java.util.ResourceBundle;
 public class TimelineController extends SQLConnection implements Initializable {
 
     @FXML
-    private Button forest, shop, timeline, tags, rewards, settings, friends, button;
+    public Button forest, shop, timeline, tags, rewards, settings, friends, button;
     @FXML
-    private VBox menu, vbox;
+    public VBox menu, vbox;
 
     @FXML
-    private Label gold;
+    public Label gold;
 
-    private Stage stage;
-    private Scene scene;
-    private List<TimeEvent> list;
+    public Stage stage;
+    public Scene scene;
+    public List<TimeEvent> list;
     UserHelper userHelper = new UserHelper();
 
     SQLConnection db = new SQLConnection();
@@ -54,13 +56,15 @@ public class TimelineController extends SQLConnection implements Initializable {
         gold.setText(String.valueOf(getGold(conn, userHelper.getUserId())));
 
         //set the image of the menu button
-        ImageView image = new ImageView("menu.png");
-        button.setGraphic(image);
+        InputStream in = getClass().getResourceAsStream("/Images/menu.png");
+        Image image = new Image(in);
+        ImageView imageView = new ImageView(image);
+        button.setGraphic(imageView);
         button.setMaxSize(40, 40);
         button.setMinSize(40, 40);
         button.setContentDisplay(ContentDisplay.TOP);
-        image.fitWidthProperty().bind(button.widthProperty());
-        image.setPreserveRatio(true);
+        imageView.fitWidthProperty().bind(button.widthProperty());
+        imageView.setPreserveRatio(true);
 
         //hide the menu buttons
         forest.setVisible(false);
@@ -93,7 +97,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void showMenu() {
+    public void showMenu() {
         if (forest.isVisible()) {
             menu.setVisible(false);
             forest.setVisible(false);
@@ -117,7 +121,7 @@ public class TimelineController extends SQLConnection implements Initializable {
         }
     }
 
-    private List<TimeEvent> listOfTimeEvents() throws SQLException {
+    public List<TimeEvent> listOfTimeEvents() throws SQLException {
         list = new ArrayList<>();
         String query = "select * from time_events where id = " + userHelper.getUserId();
         PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -136,7 +140,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void shop(ActionEvent e) throws IOException {
+    public void shop(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("shop-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -146,7 +150,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void forest(ActionEvent e) throws IOException {
+    public void forest(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -156,7 +160,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void tags(ActionEvent e) throws IOException {
+    public void tags(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("tags-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -166,7 +170,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void rewards(ActionEvent e) throws IOException {
+    public void rewards(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("achievement-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -176,7 +180,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void settings(ActionEvent e) throws IOException {
+    public void settings(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("settings-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -186,7 +190,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void friends(ActionEvent e) throws IOException {
+    public void friends(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("friends-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();

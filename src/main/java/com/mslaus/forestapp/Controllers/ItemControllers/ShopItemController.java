@@ -10,10 +10,10 @@ import javafx.scene.image.ImageView;
 public class ShopItemController {
 
     @FXML
-    private Label itemName, price;
+    public Label itemName, price;
 
     @FXML
-    private ImageView itemImage;
+    public ImageView itemImage;
 
     UserHelper userHelper = new UserHelper();
 
@@ -25,7 +25,7 @@ public class ShopItemController {
     }
 
     @FXML
-    private void buyItem(){
+    public void buyItem(){
 
 
     }

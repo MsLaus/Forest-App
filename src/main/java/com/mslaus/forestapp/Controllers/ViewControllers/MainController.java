@@ -16,9 +16,9 @@ public class MainController {
     private static Scene scene;
 
     @FXML
-    private void signIn(ActionEvent e) throws IOException {
+    public void signIn(ActionEvent e) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("signIn-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/signIn-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -28,9 +28,9 @@ public class MainController {
     }
 
     @FXML
-    private void logIn(ActionEvent e) throws IOException {
+    public void logIn(ActionEvent e) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("logIn-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/logIn-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

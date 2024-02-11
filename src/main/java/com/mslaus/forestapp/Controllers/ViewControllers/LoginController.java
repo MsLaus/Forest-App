@@ -19,23 +19,23 @@ import java.sql.Connection;
 
 public class LoginController extends SQLConnection {
 
-    private static Stage stage;
-    private static Scene scene;
+    public static Stage stage;
+    public static Scene scene;
 
     @FXML
-    private PasswordField password;
+    public PasswordField password;
 
     @FXML
-    private Label statusLabel;
+    public Label statusLabel;
 
     @FXML
-    private TextField username;
+    public TextField username;
 
     SQLConnection db = new SQLConnection();
     Connection conn = db.connection();
 
     @FXML
-    private void logIn(ActionEvent e) throws IOException {
+    public void logIn(ActionEvent e) throws IOException {
 
 
         final String USERNAME = username.getText();
@@ -44,12 +44,12 @@ public class LoginController extends SQLConnection {
         if(!validate(conn, USERNAME, PASSWORDTEXT)){
             statusLabel.setText("The username or the password is not correct!");
         }else {
-            int id = getId(conn, USERNAME, PASSWORDTEXT);
+            int id = getId(conn, USERNAME);
             UserHelper userHelper = new UserHelper();
             userHelper.setUserId(id);
             TimeLabelHelper helper = new TimeLabelHelper();
             helper.setTime(60);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
             Parent root = loader.load();
             stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
             scene = new Scene(root);

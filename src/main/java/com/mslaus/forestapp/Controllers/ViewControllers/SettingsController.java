@@ -13,11 +13,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.util.ResourceBundle;
@@ -27,22 +29,22 @@ public class SettingsController extends SQLConnection implements Initializable {
     SQLConnection db = new SQLConnection();
     Connection conn = db.connection();
 
-    private static Stage stage;
-    private static Scene scene;
+    public static Stage stage;
+    public static Scene scene;
 
     @FXML
-    private Label name;
+    public Label name;
 
     @FXML
-    private VBox menu;
+    public VBox menu;
     @FXML
-    private Button button, forest, shop, timeline, tags, rewards, settings, friends;
+    public Button button, forest, shop, timeline, tags, rewards, settings, friends;
 
     @FXML
-    private TextField newName, newPass;
+    public TextField newName, newPass;
 
     @FXML
-    private Label totalTime, totalTrees, gold, ach;
+    public Label totalTime, totalTrees, gold, ach;
 
     UserHelper userHelper = new UserHelper();
 
@@ -53,13 +55,15 @@ public class SettingsController extends SQLConnection implements Initializable {
         gold.setText(String.valueOf(getGold(conn, userHelper.getUserId())));
 
         //set the image of the menu button
-        ImageView image = new ImageView("menu.png");
-        button.setGraphic(image);
+        InputStream in = getClass().getResourceAsStream("/Images/menu.png");
+        Image image = new Image(in);
+        ImageView imageView = new ImageView(image);
+        button.setGraphic(imageView);
         button.setMaxSize(40, 40);
         button.setMinSize(40, 40);
         button.setContentDisplay(ContentDisplay.TOP);
-        image.fitWidthProperty().bind(button.widthProperty());
-        image.setPreserveRatio(true);
+        imageView.fitWidthProperty().bind(button.widthProperty());
+        imageView.setPreserveRatio(true);
 
         //set the "name" Label's text with the user's name
         name.setText(getUsername(conn, userHelper.getUserId()));
@@ -84,7 +88,7 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void changeName(){
+    public void changeName(){
 
         final String NAME = newName.getText();
         updateUsername(conn, userHelper.getUserId(), NAME);
@@ -92,19 +96,19 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void changePassword(){
+    public void changePassword(){
         final String PASS = newPass.getText();
         updatePassword(conn, userHelper.getUserId(), PASS);
     }
 
     @FXML
-    private void deleteAccount(){
+    public void deleteAccount(){
         deleteUser(conn, userHelper.getUserId());
     }
 
     @FXML
-    private void logOut(ActionEvent e)throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("welcome.fxml"));
+    public void logOut(ActionEvent e)throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/welcome.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -113,7 +117,7 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void showMenu() {
+    public void showMenu() {
         if (forest.isVisible()) {
             menu.setVisible(false);
             forest.setVisible(false);
@@ -138,8 +142,8 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void shop(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop-view.fxml"));
+    public void shop(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/shop-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -148,8 +152,8 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void timeline(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("timeline-view.fxml"));
+    public void timeline(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/timeline-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -158,8 +162,8 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void tags(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("tags-view.fxml"));
+    public void tags(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tags-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -168,8 +172,8 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void rewards(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("achievement-view.fxml"));
+    public void rewards(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/achievement-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -178,8 +182,8 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void forest(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+    public void forest(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -188,8 +192,8 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    private void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends-view.fxml"));
+    public void friends(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/friends-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
