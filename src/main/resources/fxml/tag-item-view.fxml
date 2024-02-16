@@ -11,7 +11,7 @@
     <children>
         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
             <children>
-                <HBox fx:id="colour" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" style="-fx-background-radius: 100;" />
+                <HBox fx:id="colour" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" stylesheets="@../stylesheet.css" />
                 <Label fx:id="name" styleClass="shadow" text="Study" textFill="#f5f599">
                     <font>
                         <Font name="System Italic" size="19.0" />

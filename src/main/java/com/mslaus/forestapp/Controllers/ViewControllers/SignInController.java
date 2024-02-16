@@ -76,7 +76,7 @@ public class SignInController extends SQLConnection  {
             final int ID = generateID();
 
             //inserting a new user into the database
-            insertUser(conn, ID, USERNAME, PASSWORD, 100, 0);
+            insertUser(conn, ID, USERNAME, PASSWORD);
 
 
             //Setting the fields of the userHelper

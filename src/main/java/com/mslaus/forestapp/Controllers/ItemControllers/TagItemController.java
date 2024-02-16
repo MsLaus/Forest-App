@@ -16,10 +16,11 @@ public class TagItemController {
 
     @FXML
     public Label name;
+
     public void setData(Tag tag){
 
         name.setText(tag.getName());
-        colour.setStyle("-fx-background-colour: "+tag.getColour());
-        colour.setStyle("-fx-background-radius: 100");
+        colour.setStyle("-fx-background-radius: 100; -fx-background-colour: "+tag.getColour());
+
     }
 }

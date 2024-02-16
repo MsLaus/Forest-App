@@ -152,6 +152,9 @@ public class DashboardController extends SQLConnection implements Initializable 
 
                     //the timeEvents is inserted in db
                     insertTimeEvent(conn, userHelper.getUserId(), focusedTime, timeHelper.getStartingTime(), timeHelper.getEndTime());
+                    int currentTrees = getTotalTrees(conn, userHelper.getUserId());
+                    int newTrees = ++currentTrees;
+                    updateTotalTrees(conn,userHelper.getUserId(), newTrees);
                     plantButton.setDisable(false);
                     button.setDisable(false);
                     changeTagButton.setDisable(false);
@@ -233,7 +236,7 @@ public class DashboardController extends SQLConnection implements Initializable 
 
     @FXML
     public void tags(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("tags-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tags-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -253,7 +256,7 @@ public class DashboardController extends SQLConnection implements Initializable 
 
     @FXML
     public void settings(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

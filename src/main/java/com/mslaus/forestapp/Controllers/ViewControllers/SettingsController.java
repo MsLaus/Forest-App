@@ -80,8 +80,7 @@ public class SettingsController extends SQLConnection implements Initializable {
 
         totalTime.setText(String.valueOf(getTotalMinutes(conn, userHelper.getUserId())));
 
-        // TODO: set the tree number to the actual one
-        totalTrees.setText("0");
+        totalTrees.setText(String.valueOf(getTotalTrees(conn, userHelper.getUserId())));
 
         //set the achievement label to the number of total unlocked achievement
         ach.setText(String.valueOf(achievementsUnlocked(conn, userHelper.getUserId())));

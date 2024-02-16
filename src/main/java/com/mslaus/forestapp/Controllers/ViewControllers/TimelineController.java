@@ -141,7 +141,7 @@ public class TimelineController extends SQLConnection implements Initializable {
 
     @FXML
     public void shop(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/shop-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -151,7 +151,7 @@ public class TimelineController extends SQLConnection implements Initializable {
 
     @FXML
     public void forest(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -161,7 +161,7 @@ public class TimelineController extends SQLConnection implements Initializable {
 
     @FXML
     public void tags(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("tags-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tags-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -171,7 +171,7 @@ public class TimelineController extends SQLConnection implements Initializable {
 
     @FXML
     public void rewards(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("achievement-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/achievement-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -181,7 +181,7 @@ public class TimelineController extends SQLConnection implements Initializable {
 
     @FXML
     public void settings(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("settings-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -191,7 +191,7 @@ public class TimelineController extends SQLConnection implements Initializable {
 
     @FXML
     public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/friends-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

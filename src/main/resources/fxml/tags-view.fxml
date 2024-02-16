@@ -45,7 +45,10 @@
                 </HBox>
                 <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="597.0" spacing="10.0" stylesheets="@../stylesheet.css">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#addTag" prefHeight="35.0" prefWidth="90.0" style="-fx-background-radius: 20;" styleClass="yellow-background" text="Add a tag" />
+                        <Button mnemonicParsing="false" onAction="#addTag" prefHeight="35.0" prefWidth="90.0" style="-fx-background-radius: 20;" styleClass="yellow-background" text="Add a tag">
+                     <VBox.margin>
+                        <Insets left="-30.0" />
+                     </VBox.margin></Button>
                         <ScrollPane fx:id="scrollPane" prefHeight="652.0" prefWidth="597.0" styleClass="green-background" stylesheets="@../stylesheet.css">
                             <content>
                                 <VBox fx:id="vbox" prefHeight="632.0" prefWidth="599.0" styleClass="green-background" stylesheets="@../stylesheet.css" />

@@ -22,7 +22,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return conn;
     }
@@ -33,23 +33,23 @@ public class SQLConnection {
     private void createUserTable(Connection conn, String table_name){
         Statement statement;
         try{
-            String query ="CREATE TABLE "+ table_name+" (id INT, username VARCHAR(50), password VARCHAR(50), gold INT, total_minutes INT )";
+            String query ="CREATE TABLE "+ table_name+" (id INT, username VARCHAR(50), password VARCHAR(50), gold INT, total_minutes INT, total_trees INT )";
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Table created");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     /** checks if the username is unique in the db, returns false if it is already in the db*/
-
+    // TODO: 2/16/2024 add the function where i need to
     protected boolean uniqueUsername(Connection conn, String username){
         Statement statement;
         ResultSet rs;
         try {
-            String query = String.format("select * from Users where username = '%s'", username);
+            String query = String.format("SELECT * FROM users WHERE username = '%s'", username);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if(rs.next()){
@@ -57,21 +57,21 @@ public class SQLConnection {
             }
 
         }catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return true;
     }
 
-    protected void insertUser(Connection conn, int id, String username, String password, int gold, int total_minutes){
+    protected void insertUser(Connection conn, int id, String username, String password){
         Statement statement;
         try{
-            String query = String.format("insert into Users (id, username, password, gold, total_minutes) values (%d, '%s', '%s', %d, %d);", id, username, password, gold, total_minutes);
+            String query = String.format("INSERT INTO Users (id, username, password, gold, total_minutes, total_trees) VALUES (%d, '%s', '%s', 100, 0, 0);", id, username, password);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Row inserted");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         insertAchievements(conn, id);
@@ -82,7 +82,7 @@ public class SQLConnection {
         Statement statement;
         ResultSet rs;
         try {
-            String query = String.format("select * from Users where id = %d", id);
+            String query = String.format("SELECT * FROM Users WHERE id = %d", id);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if(rs.next()){
@@ -90,7 +90,7 @@ public class SQLConnection {
             }
 
         }catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return false;
 
@@ -110,7 +110,7 @@ public class SQLConnection {
         ResultSet rs;
         String result = "";
         try{
-            String query = String.format("select password from users where username = '%s'", username);
+            String query = String.format("SELECT password FROM users WHERE username = '%s'", username);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -118,7 +118,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return result;
     }
@@ -128,7 +128,7 @@ public class SQLConnection {
         ResultSet rs;
         String result = "";
         try{
-            String query = String.format("select username from Users where id = %d", id);
+            String query = String.format("SELECT username FROM Users WHERE id = %d", id);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -136,7 +136,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return result;
 
@@ -147,7 +147,7 @@ public class SQLConnection {
         ResultSet rs;
         String result = "";
         try{
-            String query = String.format("select id from users where username = '%s' ", username);
+            String query = String.format("SELECT id FROM users WHERE username = '%s' ", username);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -155,7 +155,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return Integer.parseInt(result);
 
@@ -166,7 +166,7 @@ public class SQLConnection {
         ResultSet rs;
         String result = "";
         try{
-            String query = String.format("select gold from users where id = %d", id);
+            String query = String.format("SELECT gold FROM users WHERE id = %d", id);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -174,7 +174,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return Integer.parseInt(result);
 
@@ -185,7 +185,7 @@ public class SQLConnection {
         ResultSet rs;
         String result = "";
         try{
-            String query = String.format("select total_minutes from users where id = %d", id);
+            String query = String.format("SELECT total_minutes FROM users WHERE id = %d", id);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -193,22 +193,54 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return Integer.parseInt(result);
+
+    }
+
+    protected int getTotalTrees(Connection conn, int id){
+        Statement statement;
+        ResultSet rs;
+        String result = "";
+        try{
+            String query = String.format("SELECT total_trees FROM users WHERE id = %d", id);
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            if (rs.next()){
+                result = rs.getString("total_trees");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return Integer.parseInt(result);
+
+    }
+    protected void updateTotalTrees(Connection conn, int id, int newNumber){
+        Statement statement;
+        try{
+            String query = String.format("UPDATE users SET total_trees = %d WHERE id = %d", newNumber, id);
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("Data updated");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
     protected void updateUsername(Connection conn, int id, String username){
         Statement statement;
         try{
-            String query = String.format("update users set username = '%s' where id = %d", username, id);
+            String query = String.format("UPDATE users SET username = '%s' WHERE id = %d", username, id);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Data updated");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -216,13 +248,13 @@ public class SQLConnection {
     protected void updatePassword(Connection conn, int id, String password){
         Statement statement;
         try{
-            String query = String.format("update Users set password = '%s' where id = %d", password, id);
+            String query = String.format("UPDATE Users SET password = '%s' WHERE id = %d", password, id);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Data updated");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -232,13 +264,13 @@ public class SQLConnection {
         int current_gold = getGold(conn, id);
         int newGold = current_gold + gold;
         try{
-            String query = String.format("update Users set gold = %d where id = %d", newGold, id);
+            String query = String.format("UPDATE Users SET gold = %d WHERE id = %d", newGold, id);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Data updated");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -248,28 +280,27 @@ public class SQLConnection {
         int totalMinutes = getTotalMinutes(conn, id);
         int newMinutes = totalMinutes + time;
         try{
-            String query = String.format("update Users set total_minutes = %d where id = %d", newMinutes, id);
+            String query = String.format("UPDATE Users SET total_minutes = %d WHERE id = %d", newMinutes, id);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Data updated");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
 
     protected void deleteUser(Connection conn, int id){
         Statement statement;
-        ResultSet rs;
         try{
-            String query = String.format("delete from Users where id = %d", id);
+            String query = String.format("DELETE FROM Users WHERE id = %d", id);
             statement = conn.createStatement();
-            rs = statement.executeQuery(query);
+            statement.executeQuery(query);
             System.out.println("Row deleted.");
 
         }catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -285,19 +316,19 @@ public class SQLConnection {
             System.out.println("Table created");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     protected void insertTimeEvent(Connection conn, int id, int focused_time, String startingTime, String finishingTime) {
         Statement statement;
         try {
-            String query = String.format("insert into time_events (id, focused_time, starting_time, finishing_time) values (%d, %d, '%s', '%s');", id, focused_time, startingTime, finishingTime);
+            String query = String.format("INSERT INTO time_events (id, focused_time, starting_time, finishing_time) VALUES (%d, %d, '%s', '%s');", id, focused_time, startingTime, finishingTime);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Row inserted");
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -321,7 +352,7 @@ public class SQLConnection {
     protected void insertTag(Connection conn, int id, String name, String colour){
         Statement statement;
         try{
-            String query = String.format("INSERT into tags (id, name, colour) values (%d, '%s', '%s')", id, name, colour);
+            String query = String.format("INSERT INTO tags (id, name, colour) VALUES (%d, '%s', '%s')", id, name, colour);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Tag inserted.");
@@ -369,7 +400,7 @@ public class SQLConnection {
 
         Statement statement;
         try{
-            String query = String.format("Insert into achievements (id, title, status, rewards, received, description) values (%d, '%s', '%s', %d, '%s', '%s')", id, "Beginner", "locked", 100, "false", "Focus for five hours.");
+            String query = String.format("INSERT INTO achievements (id, title, status, rewards, received, description) VALUES (%d, '%s', '%s', %d, '%s', '%s')", id, "Beginner", "locked", 100, "false", "Focus for five hours.");
             statement = conn.createStatement();
             statement.executeUpdate(query);
 
@@ -378,7 +409,7 @@ public class SQLConnection {
         }
 
         try{
-            String query = String.format("Insert into achievements (id, title, status, rewards, received, description) values (%d, '%s', '%s', %d, '%s', '%s')", id, "Middle", "locked", 150, "false", "Focus for 10 hours.");
+            String query = String.format("INSERT INTO achievements (id, title, status, rewards, received, description) VALUES (%d, '%s', '%s', %d, '%s', '%s')", id, "Middle", "locked", 150, "false", "Focus for 10 hours.");
             statement = conn.createStatement();
             statement.executeUpdate(query);
 
@@ -387,7 +418,7 @@ public class SQLConnection {
         }
 
         try{
-            String query = String.format("Insert into achievements (id, title, status, rewards, received, description) values (%d, '%s', '%s', %d, '%s', '%s')", id, "Advance", "locked", 300, "false", "Focus for 25 hours.");
+            String query = String.format("INSERT INTO achievements (id, title, status, rewards, received, description) VALUES (%d, '%s', '%s', %d, '%s', '%s')", id, "Advance", "locked", 300, "false", "Focus for 25 hours.");
             statement = conn.createStatement();
             statement.executeUpdate(query);
 
@@ -396,7 +427,7 @@ public class SQLConnection {
         }
 
         try{
-            String query = String.format("Insert into achievements (id, title, status, rewards, received, description) values (%d, '%s', '%s', %d, '%s', '%s')", id, "Expert", "locked", 500, "false", "Focus for 40 hours.");
+            String query = String.format("INSERT INTO achievements (id, title, status, rewards, received, description) VALUES (%d, '%s', '%s', %d, '%s', '%s')", id, "Expert", "locked", 500, "false", "Focus for 40 hours.");
             statement = conn.createStatement();
             statement.executeUpdate(query);
 
@@ -412,13 +443,13 @@ public class SQLConnection {
 
         Statement statement;
         try{
-            String query = String.format("update achievements set status = '%s' where id = %d and title = '%s'", "unlocked", id, achievement);
+            String query = String.format("UPDATE achievements SET status = '%s' WHERE id = %d AND title = '%s'", "unlocked", id, achievement);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Data updated");
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -429,7 +460,7 @@ public class SQLConnection {
         ResultSet rs;
         String result = "";
         try{
-            String query = String.format("select reward from achievements where id = %d and title = '%s'", id, achievement);
+            String query = String.format("SELECT reward FROM achievements WHERE id = %d AND title = '%s'", id, achievement);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -437,7 +468,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return Integer.parseInt(result);
 
@@ -448,9 +479,9 @@ public class SQLConnection {
 
         Statement statement;
         ResultSet rs;
-        String result = "";
+        String result;
         try{
-            String query = String.format("select status from achievements where id = %d and title = '%s'", id, achievement);
+            String query = String.format("SELECT status FROM achievements WHERE id = %d AND title = '%s'", id, achievement);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -461,7 +492,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
         return false;
 
@@ -472,9 +503,9 @@ public class SQLConnection {
 
         Statement statement;
         ResultSet rs;
-        String result = "";
+        String result ;
         try{
-            String query = String.format("select received from achievements where id = %d, title = '%s' and status = 'unlocked'", id, achievement);
+            String query = String.format("SELECT received FROM achievements WHERE id = %d, title = '%s' AND status = 'unlocked'", id, achievement);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
@@ -485,7 +516,7 @@ public class SQLConnection {
             }
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -496,14 +527,16 @@ public class SQLConnection {
         int result = 0;
         try{
 
-            String query = String.format("SELECT COUNT(*) FROM achievements WHERE id = %d and status = 'unlocked'", id);
+            String query = String.format("SELECT COUNT(*) FROM achievements WHERE id = %d AND status = 'unlocked'", id);
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
             if(resultSet.next()){
                 result = resultSet.getInt(1);
             }
 
-        }catch (Exception e){}
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return result;
     }
@@ -528,7 +561,7 @@ public class SQLConnection {
     protected void insertFriendship(Connection conn, int id1, int id2){
         Statement statement;
         try{
-            String query = String.format("Insert into friendsconnection (first_id, second_id) values (%d, %d)", id1, id2);
+            String query = String.format("INSERT INTO friendsconnection (first_id, second_id) VALUES (%d, %d)", id1, id2);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Friendship inserted.");

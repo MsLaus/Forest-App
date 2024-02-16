@@ -2,6 +2,7 @@ package com.mslaus.forestapp.Controllers.ViewControllers;
 
 import com.mslaus.forestapp.Beans.Tag;
 import com.mslaus.forestapp.Controllers.ItemControllers.TagItemController;
+import com.mslaus.forestapp.HelloApplication;
 import com.mslaus.forestapp.Helpers.UserHelper;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,7 +84,7 @@ public class TagsController extends SQLConnection implements Initializable {
             for(Tag tag : list){
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("tag-item-view.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("/fxml/tag-item-view.fxml"));
                 VBox cardBox = fxmlLoader.load();
                 TagItemController controller = fxmlLoader.getController();
                 controller.setData(tag);
@@ -96,6 +98,8 @@ public class TagsController extends SQLConnection implements Initializable {
     }
 
     public List<Tag> listOfTags()throws SQLException {
+
+        // TODO: 2/12/2024 fix lack of colour 
 
         list = new ArrayList<>();
         String query = "select * from tags where id = " + userHelper.getUserId();
@@ -114,16 +118,24 @@ public class TagsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    public void addTag(ActionEvent e)throws IOException {
+    public void addTag() {
+        
+        Stage sg = new Stage();
 
-        // TODO: only pop up
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/fxml/newTag-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 400, 300);
+            sg.initStyle(StageStyle.UNDECORATED);
+            sg.setScene(scene);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("newTag-view.fxml"));
-        Parent root = loader.load();
-        stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+            NewTagController controller = fxmlLoader.getController();
+            controller.setStage(sg);
+            sg.show();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+
     }
     @FXML
     public void showMenu() {
@@ -153,7 +165,7 @@ public class TagsController extends SQLConnection implements Initializable {
 
     @FXML
     public void shop(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("shop-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/shop-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -163,7 +175,7 @@ public class TagsController extends SQLConnection implements Initializable {
 
     @FXML
     public void timeline(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("timeline-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/timeline-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -173,7 +185,7 @@ public class TagsController extends SQLConnection implements Initializable {
 
     @FXML
     public void forest(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -183,7 +195,7 @@ public class TagsController extends SQLConnection implements Initializable {
 
     @FXML
     public void rewards(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("achievement-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/achievement-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -193,7 +205,7 @@ public class TagsController extends SQLConnection implements Initializable {
 
     @FXML
     public void settings(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("settings.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/settings.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -203,7 +215,7 @@ public class TagsController extends SQLConnection implements Initializable {
 
     @FXML
     public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("friends-view.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/friends-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
