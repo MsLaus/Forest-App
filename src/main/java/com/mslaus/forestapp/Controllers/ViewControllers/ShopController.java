@@ -63,6 +63,7 @@ public class ShopController extends SQLConnection implements Initializable {
         InputStream in = getClass().getResourceAsStream("/Images/menu.png");
         Image image = new Image(in);
         ImageView imageView = new ImageView(image);
+
         button.setGraphic(imageView);
         button.setMaxSize(40, 40);
         button.setMinSize(40, 40);
@@ -86,8 +87,6 @@ public class ShopController extends SQLConnection implements Initializable {
         try{
             list = new ArrayList<>(shopItems());
 
-            // TODO: 2/7/2024 fix overlapping issue
-
             for(ShopItem s: list){
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -96,7 +95,7 @@ public class ShopController extends SQLConnection implements Initializable {
                 ShopItemController controller = fxmlLoader.getController();
                 controller.setData(s);
 
-                if(column == 3){
+                if(column == 2){
                     column =0;
                     ++row;
                 }
@@ -113,7 +112,7 @@ public class ShopController extends SQLConnection implements Initializable {
     public List<ShopItem> shopItems() throws SQLException {
 
         list = new ArrayList<>();
-        String query = String.format("SELECT * from shop where id = %d and status = '%s'",userHelper.getUserId(), "locked");
+        String query = String.format("SELECT * from shop where id = %d ", userHelper.getUserId());
         PreparedStatement preparedStatement = conn.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -130,15 +129,18 @@ public class ShopController extends SQLConnection implements Initializable {
 
     public String setImageSrc(String result){
 
-        // TODO: 2/7/2024 insert into database "shop" these items for every user
-
         return switch (result) {
-            case "mushroom" -> "D:\\Proiecte\\Java\\Java Projects\\Basic Projects\\ForestApp Demo\\src\\main\\resources\\mushroom.png";
-            case "tulip" -> "D:\\Proiecte\\Java\\Java Projects\\Basic Projects\\ForestApp Demo\\src\\main\\resources\\tulip.png";
-            case "rose" -> "D:\\Proiecte\\Java\\Java Projects\\Basic Projects\\ForestApp Demo\\src\\main\\resources\\rose.png";
-            case "sunflower" -> "D:\\Proiecte\\Java\\Java Projects\\Basic Projects\\ForestApp Demo\\src\\main\\resources\\sunflower.png";
+            case "mushroom" -> "src/main/resources/Images/ShopItems/mushroom.png";
+            case "tulip" -> "src/main/resources/Images/ShopItems/tulip.png";
+            case "rose" -> "src/main/resources/Images/ShopItems/rose.png";
+            case "sunflower" -> "src/main/resources/Images/ShopItems/sunflower.png";
+            case "pine tree" -> "src/main/resources/Images/ShopItems/pine-tree.png";
+            case "tree" -> "src/main/resources/Images/ShopItems/basicTree.png";
+            case "cherry blossom" -> "src/main/resources/Images/ShopItems/cherry-blossom.png";
+            case "lavender" -> "src/main/resources/Images/ShopItems/lavender.png";
             default -> "";
         };
+
     }
     @FXML
     public void showMenu() {

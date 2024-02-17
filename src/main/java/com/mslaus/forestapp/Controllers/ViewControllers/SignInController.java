@@ -65,48 +65,57 @@ public class SignInController extends SQLConnection  {
             dialog.show();
         }
 
-        //Checks if the passwords fields' value are the same
-        if (pass.equals(pass2)) {
+        //Checks if the username is unique
 
-            //encrypt password, and store it in the db
+        if(uniqueUsername(conn, username.getText())){
 
-            final String PASSWORD = BCrypt.hashpw(pass, BCrypt.gensalt());
+            //Checks if the passwords fields' value are the same
 
-            final String USERNAME = username.getText();
-            final int ID = generateID();
+            if (pass.equals(pass2)) {
 
-            //inserting a new user into the database
-            insertUser(conn, ID, USERNAME, PASSWORD);
+                //encrypt password, and store it in the db
+
+                final String PASSWORD = BCrypt.hashpw(pass, BCrypt.gensalt());
+
+                final String USERNAME = username.getText();
+                final int ID = generateID();
+
+                //inserting a new user into the database
+                insertUser(conn, ID, USERNAME, PASSWORD);
 
 
-            //Setting the fields of the userHelper
-            UserHelper userHelper = new UserHelper();
-            userHelper.setUserId(ID);
+                //Setting the fields of the userHelper
+                UserHelper userHelper = new UserHelper();
+                userHelper.setUserId(ID);
 
-            //Changing the interface
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
-            Parent root = loader.load();
-            stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-            scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+                //Changing the interface
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
+                Parent root = loader.load();
+                stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
 
-        } else {
+            } else {
 
-            //A dialog Box appears if the passwords do not match
-            Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle("Error");
-            dialog.setContentText("You need to write the same password.");
-            ButtonType type = new ButtonType("Ok");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.show();
+                //A dialog Box appears if the passwords do not match
+                Dialog<String> dialog = new Dialog<>();
+                dialog.setTitle("Error");
+                dialog.setContentText("You need to write the same password.");
+                ButtonType type = new ButtonType("Ok");
+                dialog.getDialogPane().getButtonTypes().add(type);
+                dialog.show();
+            }
+
         }
+
 
     }
 
     private int generateID(){
 
         int id = 0;
+        int generatedId;
 
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
@@ -119,9 +128,11 @@ public class SignInController extends SQLConnection  {
             sb.append(random.nextInt(10));
         }
 
-        if(checkID(conn, Integer.parseInt(String.valueOf(Long.valueOf(sb.toString()).longValue())))){
+        generatedId = Integer.parseInt(String.valueOf(Long.valueOf(sb.toString()).longValue()));
+
+        if(checkID(conn, generatedId)){
             generateID();
-        }else id = Integer.parseInt(String.valueOf(Long.valueOf(sb.toString()).longValue()));
+        }else id = generatedId;
 
         return id;
 

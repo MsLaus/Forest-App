@@ -31,6 +31,7 @@ public class SQLConnection {
 
     /**creates the user table in the database, it is used only once in the code*/
     private void createUserTable(Connection conn, String table_name){
+
         Statement statement;
         try{
             String query ="CREATE TABLE "+ table_name+" (id INT, username VARCHAR(50), password VARCHAR(50), gold INT, total_minutes INT, total_trees INT )";
@@ -44,8 +45,8 @@ public class SQLConnection {
     }
 
     /** checks if the username is unique in the db, returns false if it is already in the db*/
-    // TODO: 2/16/2024 add the function where i need to
     protected boolean uniqueUsername(Connection conn, String username){
+
         Statement statement;
         ResultSet rs;
         try {
@@ -62,7 +63,8 @@ public class SQLConnection {
         return true;
     }
 
-    protected void insertUser(Connection conn, int id, String username, String password){
+    protected void insertUser( Connection conn, int id, String username, String password){
+
         Statement statement;
         try{
             String query = String.format("INSERT INTO Users (id, username, password, gold, total_minutes, total_trees) VALUES (%d, '%s', '%s', 100, 0, 0);", id, username, password);
@@ -79,6 +81,7 @@ public class SQLConnection {
 
     /**checks if the number account is in the database and returns true if the ID exists*/
     protected boolean checkID(Connection conn, int id){
+
         Statement statement;
         ResultSet rs;
         try {
@@ -106,6 +109,7 @@ public class SQLConnection {
     }
 
     private String getPassword(Connection conn, String username) {
+
         Statement statement;
         ResultSet rs;
         String result = "";
@@ -124,6 +128,7 @@ public class SQLConnection {
     }
 
     protected String getUsername(Connection conn, int id){
+
         Statement statement;
         ResultSet rs;
         String result = "";
@@ -143,6 +148,7 @@ public class SQLConnection {
     }
 
     protected int getId(Connection conn, String username){
+
         Statement statement;
         ResultSet rs;
         String result = "";
@@ -162,6 +168,7 @@ public class SQLConnection {
     }
 
     protected int getGold(Connection conn, int id){
+
         Statement statement;
         ResultSet rs;
         String result = "";
@@ -181,6 +188,7 @@ public class SQLConnection {
     }
 
     protected int getTotalMinutes(Connection conn, int id){
+
         Statement statement;
         ResultSet rs;
         String result = "";
@@ -200,6 +208,7 @@ public class SQLConnection {
     }
 
     protected int getTotalTrees(Connection conn, int id){
+
         Statement statement;
         ResultSet rs;
         String result = "";
@@ -218,6 +227,7 @@ public class SQLConnection {
 
     }
     protected void updateTotalTrees(Connection conn, int id, int newNumber){
+
         Statement statement;
         try{
             String query = String.format("UPDATE users SET total_trees = %d WHERE id = %d", newNumber, id);
@@ -232,6 +242,7 @@ public class SQLConnection {
     }
 
     protected void updateUsername(Connection conn, int id, String username){
+
         Statement statement;
         try{
             String query = String.format("UPDATE users SET username = '%s' WHERE id = %d", username, id);
@@ -246,6 +257,7 @@ public class SQLConnection {
     }
 
     protected void updatePassword(Connection conn, int id, String password){
+
         Statement statement;
         try{
             String query = String.format("UPDATE Users SET password = '%s' WHERE id = %d", password, id);
@@ -260,6 +272,7 @@ public class SQLConnection {
     }
 
     protected void updateGold(Connection conn, int id, int gold){
+
         Statement statement;
         int current_gold = getGold(conn, id);
         int newGold = current_gold + gold;
@@ -276,6 +289,7 @@ public class SQLConnection {
     }
 
     protected void updateTotalMinutes(Connection conn, int id, int time){
+
         Statement statement;
         int totalMinutes = getTotalMinutes(conn, id);
         int newMinutes = totalMinutes + time;
@@ -292,6 +306,7 @@ public class SQLConnection {
     }
 
     protected void deleteUser(Connection conn, int id){
+
         Statement statement;
         try{
             String query = String.format("DELETE FROM Users WHERE id = %d", id);
@@ -308,6 +323,7 @@ public class SQLConnection {
 
     /**creates the time events table in the database, it is used only once in the code*/
     private void createTimeEventsTable(Connection conn, String table_name){
+
         Statement statement;
         try{
             String query ="CREATE TABLE "+ table_name+" (id INT, focused_time INT, starting_time VARCHAR(50), finishing_time VARCHAR(50), tag VARCHAR(50) )";
@@ -321,6 +337,7 @@ public class SQLConnection {
     }
 
     protected void insertTimeEvent(Connection conn, int id, int focused_time, String startingTime, String finishingTime) {
+
         Statement statement;
         try {
             String query = String.format("INSERT INTO time_events (id, focused_time, starting_time, finishing_time) VALUES (%d, %d, '%s', '%s');", id, focused_time, startingTime, finishingTime);
@@ -336,7 +353,8 @@ public class SQLConnection {
     //everything about the "tag" table
 
     /**creates the tags table in the database, it is used only once in the code*/
-    private static void createTagsTable(Connection conn){
+    private void createTagsTable(Connection conn){
+
         Statement statement;
         try{
             String query = "CREATE TABLE tags (id INT, name VARCHAR(50), colour VARCHAR(50) )";
@@ -350,6 +368,7 @@ public class SQLConnection {
     }
 
     protected void insertTag(Connection conn, int id, String name, String colour){
+
         Statement statement;
         try{
             String query = String.format("INSERT INTO tags (id, name, colour) VALUES (%d, '%s', '%s')", id, name, colour);
@@ -361,28 +380,12 @@ public class SQLConnection {
             e.printStackTrace();
         }
     }
-
-    //everything about the "friendsconnection" table
-
-    /**creates the friends connection table in the database, it is used only once in the code*/
-    private void createFriendsTable(Connection conn){
-
-        Statement statement;
-        try{
-            String query = "CREATE TABLE friendsConnection ( first_id INT, second_id INT)";
-            statement = conn.createStatement();
-            statement.executeUpdate(query);
-            System.out.println("Table created.");
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
+    
     //everything about the "achievements" table
 
     /**creates the achievements table in the database, it is used only once in the code*/
     private void createAchievementsTable(Connection conn){
+
         Statement statement;
         try{
             String query = "CREATE TABLE achievements ( id INT, title VARCHAR(50), status VARCHAR(50), rewards VARCHAR(50), got VARCHAR(50))";
@@ -397,6 +400,7 @@ public class SQLConnection {
     }
 
     private void insertAchievements(Connection conn, int id) {
+
 
         Statement statement;
         try{
@@ -455,6 +459,7 @@ public class SQLConnection {
     }
 
     protected int getReward(Connection conn, int id, String achievement){
+
 
         Statement statement;
         ResultSet rs;
@@ -520,7 +525,7 @@ public class SQLConnection {
         }
     }
 
-    protected int achievementsUnlocked(Connection conn, int id){
+    protected int achievementsUnlocked(Connection conn,int id){
 
         Statement statement;
         ResultSet resultSet;
@@ -545,6 +550,8 @@ public class SQLConnection {
 
     /**creates the shop table in the database, it is used only once in the code*/
     private void createShopTable(Connection conn){
+
+
         Statement statement;
         try{
             String query = "CREATE TABLE shop ( id INT, item VARCHAR(50), status VARCHAR(50), cost INT)";
@@ -558,7 +565,42 @@ public class SQLConnection {
 
     }
 
+    // TODO: 2/17/2024 write function to enter in the db shop items for users
+
+    protected void buyItem(Connection conn, int id, String item){
+
+        Statement statement;
+        try{
+            String query = String.format("UPDATE shop SET status = '%s' WHERE id = %d AND item = '%s'", "unlocked", id, item);
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("Data updated");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    //everything about the "friendsconnection" table
+
+    /**creates the friends connection table in the database, it is used only once in the code*/
+    private void createFriendsTable(Connection conn){
+
+        Statement statement;
+        try{
+            String query = "CREATE TABLE friendsConnection ( first_id INT, second_id INT)";
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("Table created.");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     protected void insertFriendship(Connection conn, int id1, int id2){
+
         Statement statement;
         try{
             String query = String.format("INSERT INTO friendsconnection (first_id, second_id) VALUES (%d, %d)", id1, id2);

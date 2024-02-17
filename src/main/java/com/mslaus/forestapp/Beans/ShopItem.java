@@ -1,5 +1,7 @@
 package com.mslaus.forestapp.Beans;
 
+import javafx.scene.image.Image;
+
 public class ShopItem {
 
     private String nameItem;
