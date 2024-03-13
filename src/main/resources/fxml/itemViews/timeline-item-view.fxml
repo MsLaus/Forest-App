@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="600.0" spacing="25.0" style="-fx-border-color: #0b7604;" styleClass="green-background" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mslaus.forestapp.controllers.itemControllers.TimelineItemController">
+    <children>
+        <Label fx:id="endTime" text="18:15" textFill="#f5f599">
+            <font>
+                <Font size="23.0" />
+            </font></Label>
+        <ImageView fitHeight="39.0" fitWidth="44.0" layoutX="324.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" styleClass="shadow">
+            <image>
+                <Image url="@../../images/clock.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="time" layoutX="10.0" layoutY="10.0" text="18:00 - 18:15" textFill="#f5f599">
+            <font>
+                <Font size="23.0" />
+            </font></Label>
+        <ImageView fitHeight="46.0" fitWidth="35.0" layoutX="115.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" styleClass="shadow">
+            <image>
+                <Image url="@../../images/hourglass.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="focusedtTime" layoutX="38.0" layoutY="10.0" text="120" textFill="#f5f599">
+            <font>
+                <Font size="23.0" />
+            </font></Label>
+        <ImageView fitHeight="39.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" styleClass="shadow">
+            <image>
+                <Image url="@../../images/tagImage.png" />
+            </image>
+        </ImageView>
+        <Label fx:id="tagName" layoutX="66.0" layoutY="10.0" text="study" textFill="#f5f599">
+            <font>
+                <Font size="23.0" />
+            </font></Label>
+    </children>
+    <padding>
+        <Insets left="20.0" top="30.0" />
+    </padding>
+</HBox>
