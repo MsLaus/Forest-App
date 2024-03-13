@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" styleClass="green-background" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mslaus.forestapp.controllers.viewControllers.MainController">
+    <children>
+        <VBox fx:id="vbox" alignment="CENTER" layoutY="410.0" prefHeight="250.0" prefWidth="600.0" spacing="70.0">
+            <children>
+                <Button fx:id="signInButton" mnemonicParsing="false" onAction="#signIn" prefHeight="38.0" prefWidth="122.0" style="-fx-background-radius: 20;" stylesheets="@../../stylesheet.css" text="Sign In">
+                    <font>
+                        <Font name="Times New Roman" size="15.0" />
+                    </font>
+                    <styleClass>
+                        <String fx:value="yellow-background" />
+                        <String fx:value="shadow" />
+                    </styleClass>
+                </Button>
+                <Button fx:id="logInButton" layoutX="249.0" layoutY="445.0" mnemonicParsing="false" onAction="#logIn" prefHeight="38.0" prefWidth="122.0" style="-fx-background-radius: 20;" stylesheets="@../../stylesheet.css" text="Log In">
+                    <font>
+                        <Font name="Times New Roman" size="15.0" />
+                    </font>
+                    <styleClass>
+                        <String fx:value="yellow-background" />
+                        <String fx:value="shadow" />
+                    </styleClass>
+                </Button>
+            </children>
+        </VBox>
+        <VBox alignment="CENTER" prefHeight="410.0" prefWidth="600.0" spacing="20.0">
+            <children>
+                <Label styleClass="shadow" stylesheets="@../../stylesheet.css" text="Forest" textFill="#f5f599">
+                    <font>
+                        <Font name="Times New Roman" size="67.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="220.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" styleClass="shadow">
+                    <image>
+                        <Image url="@../../images/welcomeIcon.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

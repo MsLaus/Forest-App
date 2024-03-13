@@ -5,9 +5,10 @@ module com.mslaus.forestapp {
     requires jbcrypt;
     requires org.postgresql.jdbc;
 
-
+    opens com.mslaus.forestapp.controllers.viewControllers to javafx.fxml;
     opens com.mslaus.forestapp to javafx.fxml;
+
     exports com.mslaus.forestapp;
-    exports com.mslaus.forestapp.Controllers.ViewControllers;
-    exports com.mslaus.forestapp.Controllers.ItemControllers;
+    exports com.mslaus.forestapp.controllers.viewControllers;
+    exports com.mslaus.forestapp.controllers.itemControllers;
 }

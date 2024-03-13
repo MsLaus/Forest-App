@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="300.0" prefWidth="400.0" styleClass="green-background" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mslaus.forestapp.controllers.viewControllers.NewTagController">
+    <children>
+        <VBox prefHeight="300.0" prefWidth="400.0" stylesheets="@../../stylesheet.css">
+            <children>
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                    <children>
+                        <HBox fx:id="colorButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="38.0" style="-fx-background-radius: 30;">
+                     <styleClass>
+                        <String fx:value="yellow-background" />
+                        <String fx:value="shadow" />
+                     </styleClass></HBox>
+                        <TextField fx:id="newTagName" prefHeight="33.0" prefWidth="163.0" style="-fx-background-radius: 20;" styleClass="shadow" />
+                        <Button mnemonicParsing="false" onAction="#addTag" prefHeight="25.0" prefWidth="102.0" style="-fx-background-radius: 20;" text="Add tag">
+                     <styleClass>
+                        <String fx:value="yellow-background" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
+                    </children>
+                </HBox>
+                <HBox prefHeight="199.0" prefWidth="400.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="30.0">
+                            <children>
+                                <Button fx:id="pink" mnemonicParsing="false" onAction="#pink" prefWidth="70.0" style="-fx-background-color: #f883df; -fx-background-radius: 20;" styleClass="shadow" stylesheets="@../../stylesheet.css" text="Pink" />
+                                <Button fx:id="green" layoutX="75.0" layoutY="97.0" mnemonicParsing="false" onAction="#green" prefWidth="70.0" style="-fx-background-color: #64f57a; -fx-background-radius: 20;" styleClass="shadow" stylesheets="@../../stylesheet.css" text="Green" />
+                                <Button fx:id="blue" layoutX="75.0" layoutY="110.0" mnemonicParsing="false" onAction="#blue" prefWidth="70.0" style="-fx-background-color: #64c0f5; -fx-background-radius: 20;" styleClass="shadow" text="Blue" />
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" spacing="30.0">
+                            <children>
+                                <Button fx:id="red" mnemonicParsing="false" onAction="#red" prefWidth="70.0" style="-fx-background-color: #f73a3a; -fx-background-radius: 20;" styleClass="shadow" text="Red" />
+                                <Button fx:id="purple" layoutX="75.0" layoutY="97.0" mnemonicParsing="false" onAction="#purple" prefWidth="70.0" style="-fx-background-color: #c883f8; -fx-background-radius: 20;" styleClass="shadow" text="Purple" />
+                                <Button fx:id="yellow" layoutX="75.0" layoutY="110.0" mnemonicParsing="false" onAction="#yellow" prefWidth="70.0" style="-fx-background-color: #f3f564; -fx-background-radius: 20;" styleClass="shadow" text="Yellow" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
