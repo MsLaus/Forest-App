@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" styleClass="green-background" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mslaus.forestapp.controllers.viewControllers.ChooseItemController">
+    <children>
+        <VBox alignment="BOTTOM_CENTER" layoutX="2.0" layoutY="-3.0" prefHeight="811.0" prefWidth="600.0" spacing="25.0" styleClass="green-background" stylesheets="@../../stylesheet.css">
+            <children>
+            <Label styleClass="shadow" text="Choose an item to be displayed while  you focus!" textFill="#f5f599">
+               <font>
+                  <Font name="Times New Roman" size="22.0" />
+               </font>
+            </Label>
+                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="597.0" spacing="10.0" styleClass="green-background" stylesheets="@../../stylesheet.css">
+                    <children>
+                        <ScrollPane prefHeight="735.0" prefWidth="597.0" styleClass="green-background" stylesheets="@../../stylesheet.css">
+                            <content>
+                                <GridPane fx:id="gridPane" styleClass="green-background" stylesheets="@../../stylesheet.css">
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                </GridPane>
+                            </content>
+                        </ScrollPane>
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
