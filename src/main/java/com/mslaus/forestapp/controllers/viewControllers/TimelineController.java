@@ -1,8 +1,8 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.TimeEvent;
+import com.mslaus.forestapp.objects.TimeEvent;
 import com.mslaus.forestapp.controllers.itemControllers.TimelineItemController;
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,7 +53,7 @@ public class TimelineController extends SQLConnection implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //set the gold value
-        gold.setText(String.valueOf(getGold(user.getId())));
+        gold.setText(String.valueOf(user.getGold()));
 
         //set the image of the menu button
         InputStream in = getClass().getResourceAsStream("/images/menu.png");
@@ -190,8 +190,8 @@ public class TimelineController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/friends-view.fxml"));
+    public void toDoList(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/task-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

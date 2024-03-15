@@ -1,7 +1,6 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.Tag;
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +43,7 @@ public class NewTagController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    public void addTag(ActionEvent event) {
+    public void addTag(ActionEvent e) {
         if(newTagName.getText().isBlank() || newTagName.getText().isEmpty()){
 
             Dialog<String> dialog = new Dialog<>();
@@ -58,18 +57,16 @@ public class NewTagController extends SQLConnection implements Initializable {
 
             try {
                 insertTag(user.getId(), newTagName.getText(), colour );
-                stage.close();
-
-                // TODO: fix issue
-
-            }catch (Exception e){
-                e.printStackTrace();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/tags-view.fxml"));
+                Parent root = loader.load();
+                stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            }catch (Exception exception){
+                exception.printStackTrace();
             }
         }
-    }
-
-    public void setStage(Stage stage){
-        this.stage = stage;
     }
 
     @FXML

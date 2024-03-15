@@ -1,18 +1,18 @@
 package com.mslaus.forestapp.controllers.itemControllers;
 
 import com.mslaus.forestapp.SQLConnection;
-import com.mslaus.forestapp.controllers.viewControllers.TagsController;
-import com.mslaus.forestapp.entities.Tag;
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.Tag;
+import com.mslaus.forestapp.objects.User;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
-import java.sql.SQLException;
+import javafx.stage.Stage;
 
 public class TagItemController extends SQLConnection {
 
@@ -27,21 +27,31 @@ public class TagItemController extends SQLConnection {
     @FXML
     public Button deleteButton;
 
+    private Scene scene;
+    private Stage stage;
+
     public void setData(Tag tag){
 
         name.setText(tag.getName());
         colour.setStyle("-fx-background-radius: 100; -fx-background-color: " +tag.getColor());
 
-        // TODO: fix delete button
-        deleteButton.setOnAction(event -> {
-            User user = new User();
-            removeTag(user.getId(), tag.getName());
-            Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle("Tag deleted.");
-            dialog.setContentText("The tag was successfully deleted.");
-            ButtonType type = new ButtonType("Ok");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.show();
+
+        name.setOnMouseClicked( (e) -> {
+
+            try {
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/dashboard-view.fxml"));
+                User user = new User();
+                user.setTagName(tag.getName());
+                Parent root = loader.load();
+                stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                stage.setScene(scene);
+                stage.show();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
         });
 
     }

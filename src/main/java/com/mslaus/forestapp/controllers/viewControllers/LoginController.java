@@ -1,6 +1,6 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.helpers.TimeHelper;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
@@ -43,9 +43,13 @@ public class LoginController extends SQLConnection {
         if(!validate( USERNAME, PASSWORDTEXT)){
             statusLabel.setText("The username or the password is not correct!");
         }else {
+            User user = new User();
             int id = getId(USERNAME);
-            User user = getUser(id);
-            user.setTagName("study");
+            user.setId(id);
+            user.setUserName(USERNAME);
+            user.setTotalMinutes(getTotalMinutes(id));
+            user.setGold(getGold(id));
+            user.setTotalTrees(getTotalTrees(id));
             timeHelper.setTime(120);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/dashboard-view.fxml"));
             Parent root = loader.load();

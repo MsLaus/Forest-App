@@ -1,8 +1,8 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.ShopItem;
+import com.mslaus.forestapp.objects.ShopItem;
 import com.mslaus.forestapp.controllers.itemControllers.ShopItemController;
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,10 +25,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -55,7 +51,7 @@ public class ShopController extends SQLConnection implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //set the gold value
-        gold.setText(String.valueOf(getGold(user.getId())));
+        gold.setText(String.valueOf(user.getGold()));
 
         //set the image of the menu button
         InputStream in = getClass().getResourceAsStream("/images/menu.png");
@@ -83,7 +79,7 @@ public class ShopController extends SQLConnection implements Initializable {
         int row = 1;
 
         try{
-            list = new ArrayList<>(shopItems());
+            list = new ArrayList<>(getLockedShopItems(user.getId()));
 
             for(ShopItem s: list){
 
@@ -91,7 +87,7 @@ public class ShopController extends SQLConnection implements Initializable {
                 fxmlLoader.setLocation(getClass().getResource("/fxml/itemViews/shop-item-view.fxml"));
                 HBox cardBox = fxmlLoader.load();
                 ShopItemController controller = fxmlLoader.getController();
-                controller.setData(s);
+                controller.setData(s, false);
 
                 if(column == 2){
                     column =0;
@@ -107,39 +103,7 @@ public class ShopController extends SQLConnection implements Initializable {
         }
     }
 
-    public List<ShopItem> shopItems() throws SQLException {
 
-        Connection conn = connection();
-        list = new ArrayList<>();
-        String query = String.format("SELECT * FROM shop WHERE user_id = %d AND status ='locked' ", user.getId());
-        PreparedStatement preparedStatement = conn.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        while(resultSet.next()){
-            list.add(new ShopItem(
-                    resultSet.getString("item"),
-                    resultSet.getInt("cost"),
-                    setImageSrc(resultSet.getString("item"))
-            ));
-        }
-
-        return list;
-    }
-
-    public String setImageSrc(String result){
-
-        return switch (result) {
-            case "MUSHROOM" -> "src/main/resources/Images/ShopItems/mushroom.png";
-            case "ROSE" -> "src/main/resources/Images/ShopItems/rose.png";
-            case "SUNFLOWER" -> "src/main/resources/Images/ShopItems/sunflower.png";
-            case "SHRUB" -> "src/main/resources/Images/ShopItems/shrub.png";
-            case "PINE_TREE" -> "src/main/resources/Images/ShopItems/pine-tree.png";
-            case "CHERRY_BLOSSOM" -> "src/main/resources/Images/ShopItems/cherry-blossom.png";
-            case "LAVENDER" -> "src/main/resources/Images/ShopItems/lavender.png";
-            default -> "";
-        };
-
-    }
 
     @FXML
     public void showMenu() {
@@ -217,8 +181,8 @@ public class ShopController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/friends-view.fxml"));
+    public void toDoList(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/task-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

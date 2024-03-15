@@ -1,8 +1,8 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.Achievement;
+import com.mslaus.forestapp.objects.Achievement;
 import com.mslaus.forestapp.controllers.itemControllers.AchievementItemController;
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.enums.Achievements;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
@@ -60,7 +60,7 @@ public class AchievementController extends SQLConnection implements Initializabl
         checkAchievements(id);
 
         //set the gold value
-        gold.setText(String.valueOf(getGold(id)));
+        gold.setText(String.valueOf(user.getGold()));
 
         //set the image of the menu button
         InputStream in = getClass().getResourceAsStream("/images/menu.png");
@@ -212,8 +212,8 @@ public class AchievementController extends SQLConnection implements Initializabl
     }
 
     @FXML
-    public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/friends-view.fxml"));
+    public void toDoList(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/task-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

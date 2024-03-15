@@ -175,7 +175,7 @@
                         <String fx:value="shadow" />
                     </styleClass>
                 </Button>
-                <Button fx:id="friends" layoutX="24.0" layoutY="302.0" mnemonicParsing="false" onAction="#friends" prefHeight="36.0" prefWidth="87.0" style="-fx-background-radius: 20;" stylesheets="@../../stylesheet.css" text="Friends">
+                <Button fx:id="friends" layoutX="24.0" layoutY="302.0" mnemonicParsing="false" onAction="#toDoList" prefHeight="36.0" prefWidth="87.0" style="-fx-background-radius: 20;" stylesheets="@../../stylesheet.css" text="To do List">
                     <styleClass>
                         <String fx:value="green-background" />
                         <String fx:value="shadow" />

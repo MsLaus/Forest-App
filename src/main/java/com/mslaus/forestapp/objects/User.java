@@ -1,4 +1,4 @@
-package com.mslaus.forestapp.entities;
+package com.mslaus.forestapp.objects;
 
 public class User {
 
@@ -35,8 +35,11 @@ public class User {
     public int getTotalTrees(){
         return totalTrees;
     }
+    public void setId(int id){
+        User.id = id;
+    }
 
-    public void setTotal_trees(int totalTrees) {
+    public void setTotalTrees(int totalTrees) {
         User.totalTrees = totalTrees;
     }
 
@@ -51,10 +54,6 @@ public class User {
 
     public int getGold() {
         return gold;
-    }
-
-    public void setId(int id) {
-        User.id = id;
     }
 
     public void setUserName(String userName) {

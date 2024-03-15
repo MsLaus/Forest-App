@@ -1,6 +1,6 @@
 package com.mslaus.forestapp.controllers.itemControllers;
 
-import com.mslaus.forestapp.entities.TimeEvent;
+import com.mslaus.forestapp.objects.TimeEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;

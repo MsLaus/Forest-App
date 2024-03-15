@@ -1,4 +1,4 @@
-package com.mslaus.forestapp.entities;
+package com.mslaus.forestapp.objects;
 
 public class TimeEvent {
 

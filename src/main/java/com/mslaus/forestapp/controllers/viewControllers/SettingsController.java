@@ -1,6 +1,6 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,7 +52,7 @@ public class SettingsController extends SQLConnection implements Initializable {
         id = user.getId();
 
         //set the gold value
-        gold.setText(String.valueOf(getGold(id)));
+        gold.setText(String.valueOf(user.getGold()));
 
         //set the image of the menu button
         InputStream in = getClass().getResourceAsStream("/images/menu.png");
@@ -66,8 +66,7 @@ public class SettingsController extends SQLConnection implements Initializable {
         imageView.setPreserveRatio(true);
 
         //set the "name" Label's text with the user's name
-        name.setText(getUsername(id));
-
+        name.setText(user.getUserName());
 
         forest.setVisible(false);
         shop.setVisible(false);
@@ -78,8 +77,8 @@ public class SettingsController extends SQLConnection implements Initializable {
         friends.setVisible(false);
         menu.setVisible(false);
 
-        totalTime.setText(String.valueOf(getTotalMinutes(id)));
-        totalTrees.setText(String.valueOf(getTotalTrees(id)));
+        totalTime.setText(String.valueOf(user.getTotalMinutes()));
+        totalTrees.setText(String.valueOf(user.getTotalTrees()));
 
         //set the achievement label to the number of total unlocked achievement
         ach.setText(String.valueOf(achievementsUnlocked(id)));
@@ -90,7 +89,7 @@ public class SettingsController extends SQLConnection implements Initializable {
 
         final String NAME = newName.getText();
         updateUsername(id, NAME);
-        name.setText(getUsername(id));
+        name.setText(user.getUserName());
     }
 
     @FXML
@@ -190,8 +189,8 @@ public class SettingsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/friends-view.fxml"));
+    public void toDoList(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/task-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

@@ -41,15 +41,7 @@
                 </HBox>
                 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="597.0" spacing="10.0">
                     <children>
-                        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="205.0" style="-fx-background-radius: 120;" styleClass="yellow-background" stylesheets="@../../stylesheet.css">
-                            <children>
-                                <ImageView fitHeight="166.0" fitWidth="142.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../images/shopItems/shrub.png" />
-                                    </image>
-                                </ImageView>
-                            </children>
-                        </VBox>
+                  <Button fx:id="itemButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#chooseItem" prefHeight="200.0" prefWidth="200.0" style="-fx-background-radius: 100;" styleClass="yellow-background" />
                         <Label fx:id="timeLabel" styleClass="shadow" text="120" textFill="#f5f599">
                             <font>
                                 <Font name="Candara" size="31.0" />
@@ -63,19 +55,18 @@
                                         <Image url="@../../images/tagImage.png" />
                                     </image>
                                 </ImageView>
-                                <Button fx:id="tagName" mnemonicParsing="false" onAction="#changeTag" style="-fx-background-color: transparent;" text="study" />
+                                <Button fx:id="tagName" mnemonicParsing="false" onAction="#changeTag" style="-fx-background-color: transparent;" stylesheets="@../../stylesheet.css" text="study" />
                             </children>
                         </HBox>
                         <Button fx:id="plantButton" mnemonicParsing="false" prefHeight="56.0" prefWidth="143.0" style="-fx-background-radius: 20;" stylesheets="@../../stylesheet.css" text="Plant">
                             <font>
-                                <Font name="Ink Free" size="25.0" />
+                                <Font name="Times New Roman" size="25.0" />
                             </font>
                      <styleClass>
                         <String fx:value="shadow" />
                         <String fx:value="yellow-background" />
                      </styleClass>
                         </Button>
-                  <Button fx:id="bttn" mnemonicParsing="false" onAction="#setItem" text="Button" />
                     </children>
                     <VBox.margin>
                         <Insets />
@@ -115,7 +106,7 @@
                         <String fx:value="shadow" />
                     </styleClass>
                 </Button>
-                <Button fx:id="friends" layoutX="24.0" layoutY="302.0" mnemonicParsing="false" onAction="#friends" prefHeight="36.0" prefWidth="87.0" style="-fx-background-radius: 20;" stylesheets="@../../stylesheet.css" text="Friends">
+                <Button fx:id="friends" layoutX="24.0" layoutY="302.0" mnemonicParsing="false" onAction="#toDoList" prefHeight="36.0" prefWidth="87.0" style="-fx-background-radius: 20;" stylesheets="@../../stylesheet.css" text="To do List">
                     <styleClass>
                         <String fx:value="green-background" />
                         <String fx:value="shadow" />

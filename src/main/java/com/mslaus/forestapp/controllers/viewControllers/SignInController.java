@@ -1,6 +1,6 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

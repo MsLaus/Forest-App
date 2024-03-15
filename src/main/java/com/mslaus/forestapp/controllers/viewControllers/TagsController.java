@@ -1,11 +1,8 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.Tag;
-import com.mslaus.forestapp.entities.User;
-import com.mslaus.forestapp.HelloApplication;
+import com.mslaus.forestapp.objects.Tag;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.SQLConnection;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,16 +15,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,27 +39,13 @@ public class TagsController extends SQLConnection implements Initializable {
     public Stage stage;
     public Scene scene;
 
-    ObservableList<Tag> list = FXCollections.observableArrayList();
-
-    List<Tag> listOfTags;
-
-    {
-        try {
-            listOfTags = new ArrayList<>(listOfTags());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     User user = new User();
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         //set the gold value
-        gold.setText(String.valueOf(getGold(user.getId())));
+        gold.setText(String.valueOf(user.getGold()));
 
         //set the image of the menu button
         InputStream in = getClass().getResourceAsStream("/images/menu.png");
@@ -90,11 +68,19 @@ public class TagsController extends SQLConnection implements Initializable {
         friends.setVisible(false);
         menu.setVisible(false);
 
-        listView.setItems(list);
+
+        try {
+            List<Tag> list = listOfTags(user.getId());
+            for (Tag tag : list) {
+                listView.getItems().add(tag);
+            }
+        } catch (SQLException exception){
+            exception.printStackTrace();
+        }
+
 
         listView.setCellFactory(param -> new ListCell<>() {
             private final Button deleteButton = new Button();
-
 
             @Override
             protected void updateItem(Tag tag, boolean empty) {
@@ -103,11 +89,11 @@ public class TagsController extends SQLConnection implements Initializable {
                 if (empty || tag == null) {
                     setText(null);
                     setGraphic(null);
+                    setStyle("-fx-background-color: #deaef4;");
                 } else {
                     setText(tag.getName());
                     setGraphic(deleteButton);
-                    setStyle("-fx-background-color: #deaef4; -fx-padding: 20px; -fx-border-width: 1px; -fx-border-color: #cccccc; -fx-font-family: System Italic; -fx-font-size: 19; -fx-text-fill: #f5f599;");
-
+                    setStyle("-fx-background-color: #deaef4; -fx-padding: 20px; -fx-border-width: 1px; -fx-border-color:  #e5bcf7; -fx-font-family: System Italic; -fx-font-size: 19; -fx-text-fill: #f5f599;");
 
                     InputStream in1 = getClass().getResourceAsStream("/images/bin.png");
                     Image image1 = new Image(in1);
@@ -118,64 +104,30 @@ public class TagsController extends SQLConnection implements Initializable {
                     deleteButton.setStyle("-fx-background-color: #deaef4;");
 
                     deleteButton.setOnAction(actionEvent -> {
+                        listView.getItems().remove(tag);
 
                         removeTag(user.getId(), tag.getName());
-                        list.remove(listView.getSelectionModel().getSelectedItem());
-                        listView.getItems().remove(tag);
-                        refreshTags();
                     });
                 }
             }
         });
-
-        refreshTags();
-
     }
-
-    private void refreshTags(){
-
-        listView.getItems().removeAll();
-        list.removeAll();
-        try {
-            Connection connection = connection();
-            Statement statement = connection.createStatement();
-            String query = "SELECT * FROM tags WHERE user_id = " + user.getId();
-            ResultSet resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-
-                listView.getItems().add(new Tag(
-                        user.getId(),
-                        resultSet.getString("name"),
-                        resultSet.getString("color"))
-                );
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     @FXML
-    public void addTag() {
-
-        Stage sg = new Stage();
+    public void addTag(ActionEvent e) {
 
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/fxml/views/newTag-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 400, 300);
-            sg.initStyle(StageStyle.UNDECORATED);
-            sg.setScene(scene);
-
-            NewTagController controller = fxmlLoader.getController();
-            controller.setStage(sg);
-
-            sg.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/newTag-view.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-
     @FXML
     public void showMenu() {
 
@@ -201,7 +153,6 @@ public class TagsController extends SQLConnection implements Initializable {
 
         }
     }
-
     @FXML
     public void shop(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/shop-view.fxml"));
@@ -211,7 +162,6 @@ public class TagsController extends SQLConnection implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
     @FXML
     public void timeline(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/timeline-view.fxml"));
@@ -221,7 +171,6 @@ public class TagsController extends SQLConnection implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
-
     @FXML
     public void forest(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/dashboard-view.fxml"));
@@ -253,8 +202,8 @@ public class TagsController extends SQLConnection implements Initializable {
     }
 
     @FXML
-    public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/friends-view.fxml"));
+    public void toDoList(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/task-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

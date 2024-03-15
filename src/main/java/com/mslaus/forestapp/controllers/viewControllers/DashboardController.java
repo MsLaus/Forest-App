@@ -1,7 +1,7 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.entities.User;
-import com.mslaus.forestapp.HelloApplication;
+import com.mslaus.forestapp.objects.User;
+import com.mslaus.forestapp.helpers.ItemHelper;
 import com.mslaus.forestapp.helpers.TimeHelper;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.animation.AnimationTimer;
@@ -21,8 +21,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -49,16 +49,15 @@ public class DashboardController extends SQLConnection implements Initializable 
     public Label gold;
 
     @FXML
-    public Button button, forest, shop, timeline, tags, rewards, settings, friends, plantButton, tagName, bttn;
+    public Button button, forest, shop, timeline, tags, rewards, settings, friends, plantButton, tagName, itemButton;
+
 
     int seconds = 0;
 
     int hours;
     int minutes;
     User user = new User();
-
-    // TODO: make a button to change the image;
-
+    ItemHelper helper = new ItemHelper();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -78,10 +77,8 @@ public class DashboardController extends SQLConnection implements Initializable 
         if(user.getTagName() == null){
             tagName.setText("study");
         }else {
-
             tagName.setText(user.getTagName());
         }
-
 
         //set the image of the menu button
         InputStream in = getClass().getResourceAsStream("/images/menu.png");
@@ -94,6 +91,33 @@ public class DashboardController extends SQLConnection implements Initializable 
         imageView.fitWidthProperty().bind(button.widthProperty());
         imageView.setPreserveRatio(true);
 
+
+        //set the image of the center vbox
+
+        // TODO: fix issue
+        FileInputStream fileInputStream;
+        Image itemImage = null;
+        try {
+            fileInputStream = new FileInputStream(helper.getFileInputStream().toString());
+            itemImage = new Image(fileInputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(itemImage == null){
+            try{
+            FileInputStream inputStream = new FileInputStream("src/main/resources/images/shopItems/shrub.png");
+            Image im = new Image(inputStream);
+            ImageView imageView1 = new ImageView(im);
+            imageView1.setFitWidth(170);
+            imageView1.setFitHeight(170);
+            itemButton.setGraphic(imageView1);
+            itemButton.setContentDisplay(ContentDisplay.CENTER);
+            imageView1.fitWidthProperty().bind(itemButton.widthProperty());
+            imageView1.setPreserveRatio(true);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else setItem(itemImage);
 
         //starting the countdown timer
         plantButton.setOnAction(event -> {
@@ -120,7 +144,6 @@ public class DashboardController extends SQLConnection implements Initializable 
         menu.setVisible(false);
 
     }
-
 
     @FXML
     public void startCountdown() {
@@ -156,7 +179,7 @@ public class DashboardController extends SQLConnection implements Initializable 
 
                     //the timeEvents is inserted in db
                     insertTimeEvent(user.getId(), focusedTime, timeHelper.getStartingTime(), timeHelper.getEndTime(), tagName.getText());
-                    int currentTrees = getTotalTrees(user.getId());
+                    int currentTrees = user.getTotalTrees();
                     int newTrees = ++currentTrees;
                     updateTotalTrees(user.getId(), newTrees);
                     plantButton.setDisable(false);
@@ -176,43 +199,45 @@ public class DashboardController extends SQLConnection implements Initializable 
         timer.start();
     }
 
-    @FXML
-    public void changeTag(){
+    public void setItem(Image image){
 
-        Stage sg = new Stage();
+        ImageView imageView1 = new ImageView(image);
+        itemButton.setGraphic(imageView1);
+        imageView1.setFitWidth(170);
+        imageView1.setFitHeight(170);
+        itemButton.setGraphic(imageView1);
+        itemButton.setContentDisplay(ContentDisplay.CENTER);
+        imageView1.fitWidthProperty().bind(itemButton.widthProperty());
+        imageView1.setPreserveRatio(true);
+    }
+
+    @FXML
+    public void changeTag(ActionEvent e){
 
         try {
 
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/fxml/views/chooseTag-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 600, 720);
-            sg.initStyle(StageStyle.UNDECORATED);
-            sg.setScene(scene);
-
-            ChooseTagController controller = fxmlLoader.getController();
-            controller.setStage(sg);
-
-            sg.show();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/chooseTag-view.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
         }catch (Exception ex){
             ex.printStackTrace();
         }
     }
 
     @FXML
-    public void setItem(){
-        Stage sg = new Stage();
+    public void chooseItem(ActionEvent e) {
 
         try {
-
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/fxml/itemViews/chooseItem-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 600, 720);
-            sg.initStyle(StageStyle.UNDECORATED);
-            sg.setScene(scene);
-
-            ChooseItemController controller = fxmlLoader.getController();
-            controller.setStage(sg);
-
-            sg.show();
-        }catch (Exception ex){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/chooseItem-view.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }catch (IOException ex){
             ex.printStackTrace();
         }
     }
@@ -293,8 +318,8 @@ public class DashboardController extends SQLConnection implements Initializable 
     }
 
     @FXML
-    public void friends(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/friends-view.fxml"));
+    public void toDoList(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/task-view.fxml"));
         Parent root = loader.load();
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);

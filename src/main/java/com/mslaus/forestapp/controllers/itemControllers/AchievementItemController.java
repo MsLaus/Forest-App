@@ -1,6 +1,6 @@
 package com.mslaus.forestapp.controllers.itemControllers;
 
-import com.mslaus.forestapp.entities.Achievement;
+import com.mslaus.forestapp.objects.Achievement;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

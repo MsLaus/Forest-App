@@ -1,8 +1,9 @@
 package com.mslaus.forestapp;
 
-import com.mslaus.forestapp.entities.ShopItem;
-import com.mslaus.forestapp.entities.Tag;
-import com.mslaus.forestapp.entities.User;
+import com.mslaus.forestapp.objects.ShopItem;
+import com.mslaus.forestapp.objects.Tag;
+import com.mslaus.forestapp.objects.Task;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.enums.Achievements;
 import com.mslaus.forestapp.enums.ShopItems;
 import org.mindrot.jbcrypt.BCrypt;
@@ -19,25 +20,23 @@ public class SQLConnection {
     String result = "";
     Connection conn = connection();
 
-    /*public static void main(String[] args) {
-        createUserTable();
-        createTimeEventsTable();
-        createAchievementsTable();
-        createTagsTable();
-        createShopTable();
-        createFriendsTable();
-    }*/
-
+    //public static void main(String[] args) {
+    //     createUserTable();
+    //     createTimeEventsTable();
+    //     createAchievementsTable();
+    //     createTagsTable();
+    //     createShopTable();
+    //     createFriendsTable();
+    //     createTasksTable();
+    // }
 
     public static Connection connection(){
         Connection conn = null;
         try{
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/"+"Forest App","postgres","projectspassword");
-            if(conn!=null){
-                System.out.println("Connection Established");
-            }else{
-                System.out.println("Connection failed.");
+            if(conn==null){
+                System.out.println("Connection failed");
             }
         }
         catch (Exception e){
@@ -87,6 +86,8 @@ public class SQLConnection {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+
 
         return user;
 
@@ -170,20 +171,38 @@ public class SQLConnection {
         return result;
     }
 
-    protected String getUsername(int id){
+    protected int getGold(int id){
 
         try{
-            query = String.format("SELECT username FROM users WHERE id = %d", id);
+            query = String.format("SELECT gold FROM users WHERE id = %d", id);
             statement = conn.createStatement();
             rs = statement.executeQuery(query);
             if (rs.next()){
-                result = rs.getString("username");
+                result = rs.getString("gold");
+            }
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return Integer.parseInt(result);
+
+    }
+
+    protected int getTotalTrees(int id){
+
+        try{
+            query = String.format("SELECT total_trees FROM users WHERE id = %d", id);
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
+            if (rs.next()){
+                result = rs.getString("total_trees");
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-        return result;
+        return Integer.parseInt(result);
 
     }
 
@@ -196,23 +215,7 @@ public class SQLConnection {
             if (rs.next()){
                 result = rs.getString("id");
             }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return Integer.parseInt(result);
 
-    }
-
-    protected int getGold(int id){
-
-        try{
-            query = String.format("SELECT gold FROM users WHERE id = %d", id);
-            statement = conn.createStatement();
-            rs = statement.executeQuery(query);
-            if (rs.next()){
-                result = rs.getString("gold");
-            }
         }
         catch (Exception e){
             e.printStackTrace();
@@ -238,22 +241,6 @@ public class SQLConnection {
 
     }
 
-    protected int getTotalTrees(int id){
-
-        try{
-            query = String.format("SELECT total_trees FROM users WHERE id = %d", id);
-            statement = conn.createStatement();
-            rs = statement.executeQuery(query);
-            if (rs.next()){
-                result = rs.getString("total_trees");
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return Integer.parseInt(result);
-
-    }
     protected void updateTotalTrees(int id, int newNumber){
 
         try{
@@ -605,6 +592,32 @@ public class SQLConnection {
 
     }
 
+    protected boolean isBuyable(int id, String item){
+
+        int currentGold = getGold(id);
+        int cost = getCostOfItem(id, item);
+
+        return currentGold - cost >= 0;
+
+    }
+
+    protected int getCostOfItem(int id, String item){
+
+        int result =0;
+
+        try{
+            String st = String.format("SELECT cost FROM shop WHERE user_id = %d AND item = '%s'", id, item);
+            statement = conn.createStatement();
+            rs = statement.executeQuery(st);
+            if (rs.next()){
+                result = rs.getInt("cost");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
     //everything about the "friendsconnection" table
 
     /**creates the friends connection table in the database, it is used only once in the code*/
@@ -671,44 +684,58 @@ public class SQLConnection {
 
     }
 
-    public List<Tag> listOfTags()throws SQLException {
+    public List<Tag> listOfTags(int id)throws SQLException {
 
         List list = new ArrayList<>();
         User user = new User();
-        String query = "SELECT * FROM tags WHERE user_id = " + user.getId() ;
+        String query = "SELECT * FROM tags WHERE user_id = " + id;
         PreparedStatement preparedStatement = conn.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()){
-            list.add(new Tag(
-                    resultSet.getInt("user_id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("color")
-            ));
+
+           Tag tag = new Tag(id, resultSet.getString("name"), resultSet.getString("color"));
+           list.add(tag);
         }
 
         return list;
     }
 
 
-    protected List<ShopItem> getPurchasedItems() throws SQLException{
+    protected List<ShopItem> getLockedShopItems(int id) throws SQLException{
 
         List list = new ArrayList<>();
-        User user = new User();
-        String query = "SELECT * FROM tags WHERE user_id = " + user.getId() ;
+        String query = "SELECT * FROM shop WHERE user_id = " + id +" AND status = 'locked' ";
         PreparedStatement preparedStatement = conn.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next()){
-            list.add(new Tag(
-                    resultSet.getInt("user_id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("color")
-            ));
+            list.add(new ShopItem(resultSet.getString("item"),
+                    resultSet.getInt("cost"),
+                    resultSet.getString("item"))
+            );
         }
 
         return list;
 
+    }
+
+
+    protected List<ShopItem> getUnlockedShopItems(int id) throws SQLException{
+
+        List list = new ArrayList<>();
+        String query = "SELECT * FROM shop WHERE user_id = " + id + " AND status = 'unlocked'";
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while(resultSet.next()){
+            list.add(new ShopItem(resultSet.getString("item"),
+                    resultSet.getInt("cost"),
+                    resultSet.getString("item"))
+            );
+        }
+
+        return list;
     }
 
     protected void removeTag(int id, String name){
@@ -716,13 +743,78 @@ public class SQLConnection {
         try{
             query = String.format("DELETE FROM tags WHERE user_id = %d AND name = '%s'", id, name);
             statement = conn.createStatement();
-            statement.executeQuery(query);
+            statement.executeUpdate(query);
 
         }catch (Exception e){
             e.printStackTrace();
         }
 
         System.out.println("Tag deleted.");
+    }
+
+    private static void createTaskTable(){
+
+        String query;
+        Statement statement;
+        Connection conn = connection();
+
+        try{
+            query = "CREATE TABLE tasks ( user_id INT NOT NULL, title VARCHAR(50) NOT NULL, description VARCHAR(200) NOT NULL, completed VARCHAR(10) NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) );";
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("Table created.");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    protected void insertTask(int id, Task task){
+
+        try{
+            query = String.format("INSERT INTO tasks (user_id, title, description, completed) VALUES (%d, '%s', '%s', '%s')", id, task.getTitle(), task.getDescription(), task.isCompleted());
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+            System.out.println("Task inserted.");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    protected List<Task> listOfTasks(int id){
+
+        List<Task> list = new ArrayList<>();
+
+        try {
+
+            String query = "SELECT * FROM tasks WHERE user_id = " + id;
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Task task = new Task(resultSet.getString("title"), resultSet.getString("description"), resultSet.getString("completed"));
+                list.add(task);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    protected void removeTask(int id, String name){
+
+        try{
+            query = String.format("DELETE FROM tasks WHERE user_id = %d AND title = '%s'", id, name);
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        System.out.println("Task deleted.");
     }
 
 }
