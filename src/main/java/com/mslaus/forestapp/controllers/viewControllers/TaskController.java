@@ -63,7 +63,7 @@ public class TaskController extends SQLConnection implements Initializable {
         }
 
 
-        listView.setCellFactory(param -> new ListCell<Task>() {
+        listView.setCellFactory(param -> new ListCell<>() {
             private final Button deleteButton = new Button();
 
             @Override
@@ -75,7 +75,7 @@ public class TaskController extends SQLConnection implements Initializable {
                     setGraphic(null);
                     setStyle("-fx-background-color: #deaef4;");
                 } else {
-                    setText(task.getTitle());
+                    setText(task.getTitle() + " : " + task.getDescription());
                     setGraphic(deleteButton);
                     setStyle("-fx-background-color: #deaef4; -fx-padding: 20px; -fx-border-width: 1px; -fx-border-color:  #e5bcf7; -fx-font-family: System Italic; -fx-font-size: 19; -fx-text-fill: #f5f599;");
 

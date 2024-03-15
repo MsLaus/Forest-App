@@ -1,10 +1,9 @@
 package com.mslaus.forestapp.controllers.itemControllers;
 
-import com.mslaus.forestapp.controllers.viewControllers.DashboardController;
+import com.mslaus.forestapp.helpers.ItemHelper;
 import com.mslaus.forestapp.objects.ShopItem;
 import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.SQLConnection;
-import com.mslaus.forestapp.helpers.ItemHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,19 +40,19 @@ public class ShopItemController extends SQLConnection {
     private Scene scene;
     private Stage stage;
 
-    FileInputStream input;
+    ShopItem chosenItem;
+
 
     public void setData(ShopItem item, boolean isBought){
 
         try {
 
-            input = new FileInputStream(item.getImageSrc());
-            System.out.println(item.getImageSrc());
-
+            //set the image of the item
+            FileInputStream input = new FileInputStream(item.getImageSrc());
             Image image = new Image(input);
             itemImage.setImage(image);
-
             itemName.setText(item.getNameItem());
+            chosenItem = item;
 
             if(isBought){
                 hbox.setVisible(false);
@@ -64,6 +63,7 @@ public class ShopItemController extends SQLConnection {
                 button.setOnAction( event -> {
                     if(isBuyable(user.getId(), item.getNameItem())) {
                         buyItem(user.getId(), itemName.getText());
+                        user.setGold(getGold(user.getId()));
                     }else {
                         Dialog<String> dialog = new Dialog<>();
                         dialog.setTitle("You can't buy this item.");
@@ -86,9 +86,7 @@ public class ShopItemController extends SQLConnection {
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/views/dashboard-view.fxml"));
         Parent root = loader.load();
-        DashboardController controller = loader.getController();
-        Image image = new Image(input);
-        controller.setItem(image);
+        helper.setShopItem(chosenItem);
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

@@ -1,9 +1,6 @@
 package com.mslaus.forestapp;
 
-import com.mslaus.forestapp.objects.ShopItem;
-import com.mslaus.forestapp.objects.Tag;
-import com.mslaus.forestapp.objects.Task;
-import com.mslaus.forestapp.objects.User;
+import com.mslaus.forestapp.objects.*;
 import com.mslaus.forestapp.enums.Achievements;
 import com.mslaus.forestapp.enums.ShopItems;
 import org.mindrot.jbcrypt.BCrypt;
@@ -26,7 +23,6 @@ public class SQLConnection {
     //     createAchievementsTable();
     //     createTagsTable();
     //     createShopTable();
-    //     createFriendsTable();
     //     createTasksTable();
     // }
 
@@ -288,7 +284,7 @@ public class SQLConnection {
         int current_gold = getGold(id);
         int newGold = current_gold + gold;
         try{
-            query = String.format("UPDATE Users SET gold = %d WHERE id = %d", newGold, id);
+            query = String.format("UPDATE users SET gold = %d WHERE id = %d", newGold, id);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("Gold updated");
@@ -338,7 +334,7 @@ public class SQLConnection {
         Connection conn = connection();
 
         try{
-            query ="CREATE TABLE time_events (user_id INT NOT NULL, focused_time INT NOT NULL, starting_time VARCHAR(50) NOT NULL, finishing_time VARCHAR(50) NOT NULL, tag VARCHAR(50) NOT NULL, " +
+            query ="CREATE TABLE time_events (user_id INT NOT NULL, focused_time INT NOT NULL, starting_time VARCHAR(50) NOT NULL, finishing_time VARCHAR(50) NOT NULL, tag VARCHAR(50) NOT NULL, item VARCHAR(50) NOT NULL" +
                     "FOREIGN KEY (user_id) REFERENCES users(id))";
             statement = conn.createStatement();
             statement.executeUpdate(query);
@@ -349,10 +345,10 @@ public class SQLConnection {
         }
     }
 
-    protected void insertTimeEvent(int id, int focused_time, String startingTime, String finishingTime, String tag) {
+    protected void insertTimeEvent(int id, int focused_time, String startingTime, String finishingTime, String tag, String item) {
 
         try {
-            query = String.format("INSERT INTO time_events (user_id, focused_time, starting_time, finishing_time, tag) VALUES (%d, %d, '%s', '%s', '%s');", id, focused_time, startingTime, finishingTime, tag);
+            query = String.format("INSERT INTO time_events (user_id, focused_time, starting_time, finishing_time, tag, item) VALUES (%d, %d, '%s', '%s', '%s', '%s');", id, focused_time, startingTime, finishingTime, tag, item);
             statement = conn.createStatement();
             statement.executeUpdate(query);
             System.out.println("TimeEvent inserted");
@@ -618,48 +614,6 @@ public class SQLConnection {
         return result;
     }
 
-    //everything about the "friendsconnection" table
-
-    /**creates the friends connection table in the database, it is used only once in the code*/
-    private static void createFriendsTable(){
-
-        String query;
-        Statement statement;
-        Connection conn = connection();
-
-        try{
-            query = "CREATE TABLE friendsConnection ( first_id INT, second_id INT, FOREIGN KEY (first_id) REFERENCES users(id), FOREIGN KEY (second_id) REFERENCES users(id))";
-            statement = conn.createStatement();
-            statement.executeUpdate(query);
-            System.out.println("Table created.");
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    protected void insertFriendship(int id1, int id2){
-
-        try{
-            query = String.format("INSERT INTO friendsconnection (first_id, second_id) VALUES (%d, %d)", id1, id2);
-            statement = conn.createStatement();
-            statement.executeUpdate(query);
-            System.out.println("Friendship inserted.");
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        try{
-            query = String.format("INSERT INTO friendsconnection (first_id, second_id) VALUES (%d, %d)", id2, id1);
-            statement = conn.createStatement();
-            statement.executeUpdate(query);
-            System.out.println("Friendship inserted.");
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
     protected void checkAchievements(int id){
 
@@ -800,6 +754,24 @@ public class SQLConnection {
         }catch (Exception e){
             e.printStackTrace();
         }
+        return list;
+    }
+
+    protected List<TimeEvent> listOfTimeEvents(int id) throws SQLException {
+        List list = new ArrayList<>();
+        String query = "SELECT * FROM time_events WHERE user_id = " + id;
+        PreparedStatement preparedStatement = conn.prepareStatement(query);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        while(resultSet.next()){
+            list.add(new TimeEvent(
+                    resultSet.getString("starting_time"),
+                    resultSet.getString("finishing_time"),
+                    resultSet.getInt("focused_time"),
+                    resultSet.getString("tag")
+            ));
+        }
+
         return list;
     }
 

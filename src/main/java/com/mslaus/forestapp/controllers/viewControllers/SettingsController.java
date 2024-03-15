@@ -89,6 +89,7 @@ public class SettingsController extends SQLConnection implements Initializable {
 
         final String NAME = newName.getText();
         updateUsername(id, NAME);
+        user.setUserName(NAME);
         name.setText(user.getUserName());
     }
 

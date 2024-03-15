@@ -45,18 +45,10 @@
                 </HBox>
                 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="597.0" spacing="10.0">
                     <children>
-                        <ScrollPane fx:id="scrollPane" prefHeight="778.0" prefWidth="598.0" stylesheets="@../../stylesheet.css">
+                        <ScrollPane fx:id="scrollPane" prefHeight="778.0" prefWidth="598.0" styleClass="green-background" stylesheets="@../../stylesheet.css">
                             <content>
-                                <VBox fx:id="vbox" prefHeight="704.0" prefWidth="599.0">
-                                    <styleClass>
-                                        <String fx:value="green-background" />
-                                        <String fx:value="shadow" />
-                                    </styleClass></VBox>
+                                <VBox fx:id="vbox" prefHeight="704.0" prefWidth="599.0" styleClass="green-background" />
                             </content>
-                            <styleClass>
-                                <String fx:value="green-background" />
-                                <String fx:value="shadow" />
-                            </styleClass>
                         </ScrollPane>
                     </children>
                     <VBox.margin>

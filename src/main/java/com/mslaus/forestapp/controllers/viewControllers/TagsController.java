@@ -81,6 +81,7 @@ public class TagsController extends SQLConnection implements Initializable {
 
         listView.setCellFactory(param -> new ListCell<>() {
             private final Button deleteButton = new Button();
+            private Button colorBox = new Button();
 
             @Override
             protected void updateItem(Tag tag, boolean empty) {
@@ -93,8 +94,12 @@ public class TagsController extends SQLConnection implements Initializable {
                 } else {
                     setText(tag.getName());
                     setGraphic(deleteButton);
+                    //setGraphic(colorBox);
                     setStyle("-fx-background-color: #deaef4; -fx-padding: 20px; -fx-border-width: 1px; -fx-border-color:  #e5bcf7; -fx-font-family: System Italic; -fx-font-size: 19; -fx-text-fill: #f5f599;");
 
+                    colorBox.setStyle("-fx-background-color: " +tag.getColor()+ "; -fx-background-radius: 30;");
+                    colorBox.setMaxSize(20, 20);
+                    colorBox.setMinSize(20,20);
                     InputStream in1 = getClass().getResourceAsStream("/images/bin.png");
                     Image image1 = new Image(in1);
                     ImageView imageView1 = new ImageView(image1);

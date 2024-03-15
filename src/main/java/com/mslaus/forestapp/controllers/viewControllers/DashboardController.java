@@ -1,7 +1,8 @@
 package com.mslaus.forestapp.controllers.viewControllers;
 
-import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.helpers.ItemHelper;
+import com.mslaus.forestapp.objects.ShopItem;
+import com.mslaus.forestapp.objects.User;
 import com.mslaus.forestapp.helpers.TimeHelper;
 import com.mslaus.forestapp.SQLConnection;
 import javafx.animation.AnimationTimer;
@@ -22,9 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -57,7 +56,6 @@ public class DashboardController extends SQLConnection implements Initializable 
     int hours;
     int minutes;
     User user = new User();
-    ItemHelper helper = new ItemHelper();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -93,31 +91,38 @@ public class DashboardController extends SQLConnection implements Initializable 
 
 
         //set the image of the center vbox
+        ItemHelper helper = new ItemHelper();
+        if(helper.getShopItem() != null){
 
-        // TODO: fix issue
-        FileInputStream fileInputStream;
-        Image itemImage = null;
-        try {
-            fileInputStream = new FileInputStream(helper.getFileInputStream().toString());
-            itemImage = new Image(fileInputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if(itemImage == null){
-            try{
-            FileInputStream inputStream = new FileInputStream("src/main/resources/images/shopItems/shrub.png");
-            Image im = new Image(inputStream);
-            ImageView imageView1 = new ImageView(im);
-            imageView1.setFitWidth(170);
-            imageView1.setFitHeight(170);
-            itemButton.setGraphic(imageView1);
-            itemButton.setContentDisplay(ContentDisplay.CENTER);
-            imageView1.fitWidthProperty().bind(itemButton.widthProperty());
-            imageView1.setPreserveRatio(true);
-            }catch (Exception e){
+            ShopItem shopItem = helper.getShopItem();
+            try {
+                FileInputStream inputStream = new FileInputStream(shopItem.getImageSrc());
+                Image im = new Image(inputStream);
+                ImageView imageView1 = new ImageView(im);
+                imageView1.setFitWidth(170);
+                imageView1.setFitHeight(170);
+                itemButton.setGraphic(imageView1);
+                itemButton.setContentDisplay(ContentDisplay.CENTER);
+                imageView1.fitWidthProperty().bind(itemButton.widthProperty());
+                imageView1.setPreserveRatio(true);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                FileInputStream inputStream = new FileInputStream("src/main/resources/images/shopItems/shrub.png");
+                Image im = new Image(inputStream);
+                ImageView imageView1 = new ImageView(im);
+                imageView1.setFitWidth(170);
+                imageView1.setFitHeight(170);
+                itemButton.setGraphic(imageView1);
+                itemButton.setContentDisplay(ContentDisplay.CENTER);
+                imageView1.fitWidthProperty().bind(itemButton.widthProperty());
+                imageView1.setPreserveRatio(true);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else setItem(itemImage);
+        }
 
         //starting the countdown timer
         plantButton.setOnAction(event -> {
@@ -178,10 +183,18 @@ public class DashboardController extends SQLConnection implements Initializable 
                     timeHelper.setEndTime(now.get(Calendar.HOUR_OF_DAY)+ ":"+ now.get(Calendar.MINUTE));
 
                     //the timeEvents is inserted in db
-                    insertTimeEvent(user.getId(), focusedTime, timeHelper.getStartingTime(), timeHelper.getEndTime(), tagName.getText());
+                    ItemHelper itemHelper = new ItemHelper();
+                    ShopItem shopItem = itemHelper.getShopItem();
+                    insertTimeEvent(user.getId(), focusedTime, timeHelper.getStartingTime(), timeHelper.getEndTime(), tagName.getText(), shopItem.getNameItem());
                     int currentTrees = user.getTotalTrees();
                     int newTrees = ++currentTrees;
                     updateTotalTrees(user.getId(), newTrees);
+
+                    //for every 3 minutes focusing, the user gets 1 gold
+                    int goldReceived = focusedTime/3;
+                    updateGold(user.getId(), goldReceived);
+                    user.setGold(getGold(user.getId()));
+                    gold.setText(String.valueOf(user.getGold()));
                     plantButton.setDisable(false);
                     button.setDisable(false);
                 }

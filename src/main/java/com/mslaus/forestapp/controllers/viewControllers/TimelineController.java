@@ -23,10 +23,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -46,8 +42,6 @@ public class TimelineController extends SQLConnection implements Initializable {
     public List<TimeEvent> list;
     User user = new User();
 
-    SQLConnection db = new SQLConnection();
-    Connection conn = db.connection();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -78,7 +72,7 @@ public class TimelineController extends SQLConnection implements Initializable {
 
 
         try{
-            list = new ArrayList<>(listOfTimeEvents());
+            list = new ArrayList<>(listOfTimeEvents(user.getId()));
 
             for(TimeEvent timeEvent : list){
 
@@ -119,24 +113,6 @@ public class TimelineController extends SQLConnection implements Initializable {
             friends.setVisible(true);
 
         }
-    }
-
-    public List<TimeEvent> listOfTimeEvents() throws SQLException {
-        list = new ArrayList<>();
-        String query = "SELECT * FROM time_events WHERE user_id = " + user.getId();
-        PreparedStatement preparedStatement = conn.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        while(resultSet.next()){
-            list.add(new TimeEvent(
-                    resultSet.getString("starting_time"),
-                    resultSet.getString("finishing_time"),
-                    resultSet.getInt("focused_time"),
-                    resultSet.getString("tag")
-            ));
-        }
-
-        return list;
     }
 
     @FXML

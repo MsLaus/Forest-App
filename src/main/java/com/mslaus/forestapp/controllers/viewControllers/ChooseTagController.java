@@ -5,7 +5,6 @@ import com.mslaus.forestapp.controllers.itemControllers.TagItemController;
 import com.mslaus.forestapp.SQLConnection;
 import com.mslaus.forestapp.objects.User;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

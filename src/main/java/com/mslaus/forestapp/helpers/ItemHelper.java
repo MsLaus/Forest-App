@@ -1,16 +1,16 @@
 package com.mslaus.forestapp.helpers;
 
-import java.io.FileInputStream;
+import com.mslaus.forestapp.objects.ShopItem;
 
 public class ItemHelper {
 
-   FileInputStream fileInputStream;
+    private static ShopItem shopItem;
 
-    public FileInputStream getFileInputStream() {
-        return fileInputStream;
+    public ShopItem getShopItem() {
+        return shopItem;
     }
 
-    public void setFileInputStream(FileInputStream fileInputStream) {
-        this.fileInputStream = fileInputStream;
+    public void setShopItem(ShopItem shopItem) {
+        ItemHelper.shopItem = shopItem;
     }
 }

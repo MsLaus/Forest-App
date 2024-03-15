@@ -8,7 +8,7 @@ public class TimeHelper {
     public static int time;
 
     public void setTime(int time) {
-        this.time = time;
+        TimeHelper.time = time;
     }
 
     public int getTime() {
